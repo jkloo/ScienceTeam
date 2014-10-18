@@ -1547,7 +1547,7 @@ SpriteRenderer:
   m_ScaleInLightmap: 1
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: f3f3675bc4748470189444c88bf239cc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0c75f2e1857b94995979db32946ff34b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!50 &905983118
 Rigidbody2D:
