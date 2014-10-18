@@ -3,7 +3,12 @@
 	[
 		{
 			"follow_symlinks": true,
-			"path": "."
+			"path": "Assets/scripts"
 		}
-	]
+	],
+    "settings":
+    {
+        "translate_tabs_to_spaces": true,
+        "default_line_ending": "unix"
+    }
 }
