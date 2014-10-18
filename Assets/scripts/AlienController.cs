@@ -9,6 +9,7 @@ public class AlienController : MonoBehaviour {
     Animator anim;
 
     bool grounded = false;
+    bool crouched = false;
     public Transform groundCheck;
     float groundRadius = 0.2f;
     public LayerMask whatIsGround;
@@ -28,27 +29,39 @@ public class AlienController : MonoBehaviour {
                                            groundRadius,
                                            whatIsGround);
         anim.SetBool("Ground", grounded);
+        anim.SetBool("Crouch", crouched);
         anim.SetFloat("vSpeed", rigidbody2D.velocity.y);
-
-        float move = Input.GetAxis("Horizontal");
-        rigidbody2D.velocity = new Vector2(move * maxSpeed, rigidbody2D.velocity.y);
-        anim.SetFloat("Speed", Mathf.Abs(move));
-
-        if (move > 0 && !facingRight)
+        if(!crouched)
         {
-            Flip();
-        } else if (move < 0 && facingRight)
-        {
-            Flip();
+            float move = Input.GetAxis("Horizontal");
+            rigidbody2D.velocity = new Vector2(move * maxSpeed, rigidbody2D.velocity.y);
+            anim.SetFloat("Speed", Mathf.Abs(move));            
+            if (move > 0 && !facingRight)
+            {
+                Flip();
+            }
+            else if (move < 0 && facingRight)
+            {
+                Flip();
+            }
         }
+
     }
 
     void Update()
     {
-        if(grounded && Input.GetKeyDown(KeyCode.Space))
+        if(grounded)
         {
-            anim.SetBool("Ground", false);
-            rigidbody2D.AddForce(new Vector2(0, jumpForce));
+            if(Input.GetButtonDown("Jump"))
+            {
+                anim.SetBool("Ground", false);
+                rigidbody2D.AddForce(new Vector2(0, jumpForce));
+            }
+            crouched = Input.GetButton("Crouch");
+        }
+        else
+        {
+            crouched= false;
         }
     }
 
