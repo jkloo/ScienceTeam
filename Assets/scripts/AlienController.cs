@@ -35,7 +35,7 @@ public class AlienController : MonoBehaviour {
         {
             float move = Input.GetAxis("Horizontal");
             rigidbody2D.velocity = new Vector2(move * maxSpeed, rigidbody2D.velocity.y);
-            anim.SetFloat("Speed", Mathf.Abs(move));            
+            anim.SetFloat("Speed", Mathf.Abs(move));
             if (move > 0 && !facingRight)
             {
                 Flip();

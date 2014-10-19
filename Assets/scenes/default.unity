@@ -1180,6 +1180,7 @@ GameObject:
   - 92: {fileID: 735238005}
   - 124: {fileID: 735238004}
   - 81: {fileID: 735238003}
+  - 114: {fileID: 735238008}
   m_Layer: 9
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1252,6 +1253,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
+--- !u!114 &735238008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 735238002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9eb3564b0c61b43b589c01969572985d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  xMargin: 1
+  yMargin: 1
+  maxX: 100000
+  maxY: 100000
+  minX: -100000
+  minY: 2
+  player: {fileID: 905983119}
 --- !u!1001 &739471013
 Prefab:
   m_ObjectHideFlags: 0
@@ -1504,7 +1523,7 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 4294967039
-  jumpForce: 700
+  jumpForce: 500
 --- !u!58 &905983115
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1547,7 +1566,7 @@ SpriteRenderer:
   m_ScaleInLightmap: 1
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 0c75f2e1857b94995979db32946ff34b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f3f3675bc4748470189444c88bf239cc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!50 &905983118
 Rigidbody2D:
