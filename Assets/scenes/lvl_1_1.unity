@@ -410,7 +410,6 @@ GameObject:
   - 4: {fileID: 203295251}
   - 61: {fileID: 203295250}
   - 212: {fileID: 203295249}
-  - 114: {fileID: 203295248}
   m_Layer: 0
   m_Name: Safezone
   m_TagString: Untagged
@@ -418,19 +417,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &203295248
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400002, guid: 68635406f04b449e7bec78129e36e609,
-    type: 2}
-  m_PrefabInternal: {fileID: 1004259165}
-  m_GameObject: {fileID: 203295247}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c70b1f8ee0ffa42d389bd872ed7ebea7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startPosition: {fileID: 231891516}
 --- !u!212 &203295249
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -571,7 +557,7 @@ GameObject:
   - 61: {fileID: 231891517}
   m_Layer: 10
   m_Name: levelStart
-  m_TagString: Untagged
+  m_TagString: Checkpoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -702,7 +688,7 @@ Transform:
   m_PrefabInternal: {fileID: 1320250978}
   m_GameObject: {fileID: 415355777}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -14, y: .119999997, z: 0}
+  m_LocalPosition: {x: -10.5799999, y: .119999997, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1563069258}
@@ -721,11 +707,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 10
-  groundCheck: {fileID: 1563069258}
+  jumpForce: 500
   whatIsGround:
     serializedVersion: 2
     m_Bits: 512
-  jumpForce: 500
+  groundCheck: {fileID: 1563069258}
+  safeZone: {fileID: 203295250}
+  respawnPosition: {fileID: 231891516}
 --- !u!95 &415355781
 Animator:
   serializedVersion: 3
@@ -1623,7 +1611,7 @@ GameObject:
   - 114: {fileID: 1258704422}
   m_Layer: 10
   m_Name: levelExit
-  m_TagString: Untagged
+  m_TagString: Finish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1640,7 +1628,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afade7a73e2574318be085a718825fab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextLevel: default
+  nextLevel: lvl_1_1
 --- !u!61 &1258704423
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1697,7 +1685,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400000, guid: d27bbd92955694ac4a3c2b11cef861c0, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -14
+      value: -10.5799999
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: d27bbd92955694ac4a3c2b11cef861c0, type: 2}
       propertyPath: m_LocalPosition.y
@@ -1727,6 +1715,14 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: d27bbd92955694ac4a3c2b11cef861c0, type: 2}
+      propertyPath: safeZone
+      value: 
+      objectReference: {fileID: 203295250}
+    - target: {fileID: 11400002, guid: d27bbd92955694ac4a3c2b11cef861c0, type: 2}
+      propertyPath: respawnPosition
+      value: 
+      objectReference: {fileID: 231891516}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d27bbd92955694ac4a3c2b11cef861c0, type: 2}
   m_RootGameObject: {fileID: 415355777}

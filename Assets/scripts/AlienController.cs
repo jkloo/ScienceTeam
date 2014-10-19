@@ -4,21 +4,23 @@ using System.Collections;
 public class AlienController : MonoBehaviour {
 
     public float maxSpeed = 10f;
-    private bool facingRight = true;
-
-    Animator anim;
-
-    bool grounded = false;
-    bool crouched = false;
-    public Transform groundCheck;
-    float groundRadius = 0.2f;
-    public LayerMask whatIsGround;
     public float jumpForce = 700.0f;
+    public LayerMask whatIsGround;
+    public Transform groundCheck;
+    public Collider2D safeZone;
+    public Transform respawnPosition;
+
+    private Animator anim;
+    private float groundRadius = 0.2f;
+    private bool facingRight = true;
+    private bool crouched = false;
+    private bool grounded = false;
 
     // Use this for initialization
     void Start()
     {
         anim = GetComponent<Animator>();
+        transform.position = respawnPosition.position;
     }
 
     // Update is called once per frame
@@ -71,5 +73,22 @@ public class AlienController : MonoBehaviour {
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
         transform.localScale = theScale;
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.gameObject.CompareTag("Checkpoint"))
+        {
+            respawnPosition = other.gameObject.transform;
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if(other == safeZone)
+        {
+            transform.position = respawnPosition.position;
+            rigidbody2D.velocity = Vector2.zero;
+        }
     }
 }

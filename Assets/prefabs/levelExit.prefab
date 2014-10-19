@@ -13,7 +13,7 @@ GameObject:
   - 114: {fileID: 11400000}
   m_Layer: 10
   m_Name: levelExit
-  m_TagString: Untagged
+  m_TagString: Finish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afade7a73e2574318be085a718825fab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextLevel: default
+  nextLevel: lvl_1_1
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1
