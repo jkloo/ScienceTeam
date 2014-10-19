@@ -15,25 +15,37 @@ public class AlienController : MonoBehaviour {
     private bool facingRight = true;
     private bool crouched = false;
     private bool grounded = false;
+    private bool respawn = false;
+    private float respawnTime = 0.5f;
+    private float vSpeed = 0.0f;
 
     // Use this for initialization
     void Start()
     {
         anim = GetComponent<Animator>();
-        transform.position = respawnPosition.position;
+        Respawn();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
 
-        grounded = Physics2D.OverlapCircle(groundCheck.position,
-                                           groundRadius,
-                                           whatIsGround);
+        if(respawn)
+        {
+            grounded = true;
+            vSpeed = 0.0f;
+        }
+        else
+        {
+            grounded = Physics2D.OverlapCircle(groundCheck.position,
+                                               groundRadius,
+                                               whatIsGround);
+            vSpeed = rigidbody2D.velocity.y;
+        }
         anim.SetBool("Ground", grounded);
         anim.SetBool("Crouch", crouched);
-        anim.SetFloat("vSpeed", rigidbody2D.velocity.y);
-        if(!crouched)
+        anim.SetFloat("vSpeed", vSpeed);
+        if(!crouched && !respawn)
         {
             float move = Input.GetAxis("Horizontal");
             rigidbody2D.velocity = new Vector2(move * maxSpeed, rigidbody2D.velocity.y);
@@ -52,7 +64,7 @@ public class AlienController : MonoBehaviour {
 
     void Update()
     {
-        if(grounded)
+        if(grounded && !respawn)
         {
             if(Input.GetButtonDown("Jump"))
             {
@@ -87,8 +99,26 @@ public class AlienController : MonoBehaviour {
     {
         if(other == safeZone)
         {
-            transform.position = respawnPosition.position;
-            rigidbody2D.velocity = Vector2.zero;
+            Respawn();
         }
+    }
+
+    void Respawn()
+    {
+        StartCoroutine(RespawnWait());
+    }
+
+    IEnumerator RespawnWait()
+    {
+        transform.position = respawnPosition.position;
+        rigidbody2D.velocity = Vector2.zero;
+
+        float gravity = rigidbody2D.gravityScale;
+        rigidbody2D.gravityScale = 0.0f;
+        respawn = true;
+        anim.SetTrigger("Respawn");
+        yield return new WaitForSeconds(respawnTime);
+        rigidbody2D.gravityScale = gravity;
+        respawn = false;
     }
 }

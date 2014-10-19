@@ -277,22 +277,6 @@ Prefab:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: d27bbd92955694ac4a3c2b11cef861c0, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: d27bbd92955694ac4a3c2b11cef861c0, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: d27bbd92955694ac4a3c2b11cef861c0, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: d27bbd92955694ac4a3c2b11cef861c0, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: d27bbd92955694ac4a3c2b11cef861c0, type: 2}
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
@@ -304,6 +288,10 @@ Prefab:
       propertyPath: respawnPosition
       value: 
       objectReference: {fileID: 1733504039}
+    - target: {fileID: 5000000, guid: d27bbd92955694ac4a3c2b11cef861c0, type: 2}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d27bbd92955694ac4a3c2b11cef861c0, type: 2}
   m_RootGameObject: {fileID: 905983112}
