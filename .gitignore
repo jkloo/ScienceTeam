@@ -34,3 +34,4 @@ Thumbs.db
 # Sublimetext #
 # =========== #
 *.sublime-workspace
+Build/
