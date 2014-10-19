@@ -7,3 +7,7 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/scenes/default.unity
+  - enabled: 1
+    path: Assets/scenes/lvl_1_1.unity
+  - enabled: 0
+    path: Assets/scenes/default.unity
