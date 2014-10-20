@@ -1125,7 +1125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98b5d0e64f74b47e9accec608529b896, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 5.5
+  maxSpeed: 7.5
   jumpForce: 500
   whatIsGround:
     serializedVersion: 2
@@ -4233,7 +4233,7 @@ Prefab:
       objectReference: {fileID: 231891516}
     - target: {fileID: 11400002, guid: d27bbd92955694ac4a3c2b11cef861c0, type: 2}
       propertyPath: maxSpeed
-      value: 5.5
+      value: 7.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d27bbd92955694ac4a3c2b11cef861c0, type: 2}
