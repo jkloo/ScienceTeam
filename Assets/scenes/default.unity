@@ -309,7 +309,7 @@ Transform:
   - {fileID: 2032088176}
   - {fileID: 1522233918}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
 --- !u!1001 &89316044
 Prefab:
   m_ObjectHideFlags: 0
@@ -2310,7 +2310,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98b5d0e64f74b47e9accec608529b896, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 5
+  maxSpeed: 7.5
   jumpForce: 500
   whatIsGround:
     serializedVersion: 2
@@ -2393,7 +2393,7 @@ Transform:
   m_Children:
   - {fileID: 1502077534}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
 --- !u!1 &944767349
 GameObject:
   m_ObjectHideFlags: 0

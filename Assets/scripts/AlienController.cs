@@ -23,6 +23,7 @@ public class AlienController : MonoBehaviour {
     void Start()
     {
         anim = GetComponent<Animator>();
+        MoveTo(respawnPosition.position);
         Respawn();
     }
 
@@ -50,14 +51,7 @@ public class AlienController : MonoBehaviour {
             float move = Input.GetAxis("Horizontal");
             rigidbody2D.velocity = new Vector2(move * maxSpeed, rigidbody2D.velocity.y);
             anim.SetFloat("Speed", Mathf.Abs(move));
-            if (move > 0 && !facingRight)
-            {
-                Flip();
-            }
-            else if (move < 0 && facingRight)
-            {
-                Flip();
-            }
+            HandleFlip(move);
         }
 
     }
@@ -75,7 +69,19 @@ public class AlienController : MonoBehaviour {
         }
         else
         {
-            crouched= false;
+            crouched = false;
+        }
+    }
+
+    void HandleFlip(float move)
+    {
+        if (move > 0 && !facingRight)
+        {
+            Flip();
+        }
+        else if (move < 0 && facingRight)
+        {
+            Flip();
         }
     }
 
@@ -93,12 +99,19 @@ public class AlienController : MonoBehaviour {
         {
             respawnPosition = other.gameObject.transform;
         }
+        else if(other.gameObject.CompareTag("Finish") && !respawn)
+        {
+            Respawn();
+            NextLevelLoader nextLevelLoader = other.GetComponent<NextLevelLoader>();
+            LoadNextLevel(nextLevelLoader.nextLevel);
+        }
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
         if(other == safeZone)
         {
+            MoveTo(respawnPosition.position);
             Respawn();
         }
     }
@@ -108,17 +121,34 @@ public class AlienController : MonoBehaviour {
         StartCoroutine(RespawnWait());
     }
 
+    void MoveTo(Vector3 position)
+    {
+        transform.position = position;
+    }
+
     IEnumerator RespawnWait()
     {
-        transform.position = respawnPosition.position;
-        rigidbody2D.velocity = Vector2.zero;
-
+        respawn = true;
         float gravity = rigidbody2D.gravityScale;
         rigidbody2D.gravityScale = 0.0f;
-        respawn = true;
+        rigidbody2D.velocity = Vector2.zero;
+
         anim.SetTrigger("Respawn");
         yield return new WaitForSeconds(respawnTime);
+
         rigidbody2D.gravityScale = gravity;
         respawn = false;
     }
+
+    void LoadNextLevel(string nextLevel)
+    {
+        StartCoroutine(LoadNextLevelWait(nextLevel));
+    }
+
+    IEnumerator LoadNextLevelWait(string nextLevel)
+    {
+        yield return new WaitForSeconds(respawnTime);
+        Application.LoadLevel(nextLevel);
+    }
 }
+
