@@ -77,6 +77,11 @@ public class AlienController : MonoBehaviour {
 
         if(grounded)
         {
+            if(glide)
+            {
+                glide = false;
+                rigidbody2D.gravityScale /= glideFactor;
+            }
             if(Input.GetButtonDown("Jump"))
             {
                 canGlide = true;
@@ -89,8 +94,15 @@ public class AlienController : MonoBehaviour {
         {
             if(Input.GetButtonDown("Glide") && !glide && canGlide)
             {
-                Glide();
+                glide = true;
+                rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0.1f * rigidbody2D.velocity.y);
+                rigidbody2D.gravityScale *= glideFactor;
                 canGlide = false;
+            }
+            else if(Input.GetButtonUp("Glide") && glide)
+            {
+                rigidbody2D.gravityScale /= glideFactor;
+                glide = false;
             }
             crouched = false;
         }
@@ -106,24 +118,6 @@ public class AlienController : MonoBehaviour {
         {
             Flip();
         }
-    }
-
-    void Glide()
-    {
-        StartCoroutine(GlideWait());
-    }
-
-    IEnumerator GlideWait()
-    {
-        glide = true;
-        rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0);
-        rigidbody2D.gravityScale *= glideFactor;
-
-        yield return new WaitForSeconds(glideDuration);
-
-        rigidbody2D.gravityScale /= glideFactor;
-        glide = false;
-
     }
 
     void Flip()
