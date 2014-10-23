@@ -1127,6 +1127,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 7.5
   jumpForce: 500
+  glideFactor: .00999999978
+  glideDuration: .5
   whatIsGround:
     serializedVersion: 2
     m_Bits: 512
