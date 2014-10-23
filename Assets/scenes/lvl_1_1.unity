@@ -1127,7 +1127,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 7.5
   jumpForce: 500
-  glideFactor: .00999999978
+  glideFactor: .200000003
   glideDuration: .5
   whatIsGround:
     serializedVersion: 2
@@ -4233,6 +4233,10 @@ Prefab:
       propertyPath: respawnPosition
       value: 
       objectReference: {fileID: 231891516}
+    - target: {fileID: 11400002, guid: d27bbd92955694ac4a3c2b11cef861c0, type: 2}
+      propertyPath: glideFactor
+      value: .200000003
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d27bbd92955694ac4a3c2b11cef861c0, type: 2}
   m_RootGameObject: {fileID: 415355777}
