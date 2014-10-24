@@ -2416,7 +2416,7 @@ SpriteRenderer:
   m_ScaleInLightmap: 1
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: f3f3675bc4748470189444c88bf239cc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9f517d9abc4e74c80a902771e0fb4f02, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!50 &905983118
 Rigidbody2D:
@@ -3574,6 +3574,24 @@ Prefab:
       propertyPath: respawnPosition
       value: 
       objectReference: {fileID: 1733504039}
+    - target: {fileID: 21200000, guid: d27bbd92955694ac4a3c2b11cef861c0, type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 9f517d9abc4e74c80a902771e0fb4f02,
+        type: 3}
+    - target: {fileID: 100002, guid: d27bbd92955694ac4a3c2b11cef861c0, type: 2}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: -1376725286, guid: 0000000000000000d000000000000000,
+        type: 0}
+    - target: {fileID: 5800000, guid: d27bbd92955694ac4a3c2b11cef861c0, type: 2}
+      propertyPath: m_Center.y
+      value: -.200000003
+      objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: d27bbd92955694ac4a3c2b11cef861c0, type: 2}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 9a97564b4a2dd4254b3b70af4a2a7389, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d27bbd92955694ac4a3c2b11cef861c0, type: 2}
   m_RootGameObject: {fileID: 905983112}
@@ -3671,7 +3689,7 @@ GameObject:
   m_Layer: 8
   m_Name: groundCheck
   m_TagString: Untagged
-  m_Icon: {fileID: 266726316, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: -1376725286, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1

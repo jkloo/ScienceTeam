@@ -5,7 +5,7 @@ AnimationClip:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: jump2
+  m_Name: GreenRun
   serializedVersion: 4
   m_AnimationType: 2
   m_Compressed: 0
@@ -17,12 +17,12 @@ AnimationClip:
   m_FloatCurves: []
   m_PPtrCurves:
   - curve:
-    - time: 0
-      value: {fileID: 21300000, guid: 90ab737ea89094fc6a928948825ea12e, type: 3}
-    - time: .0833333358
-      value: {fileID: 21300000, guid: 36bb9db992e224471895b1bbdfb2cccc, type: 3}
-    - time: .166666672
-      value: {fileID: 21300000, guid: 90ab737ea89094fc6a928948825ea12e, type: 3}
+    - time: -0
+      value: {fileID: 21300000, guid: 9283cfed5aaba41e8aaa4d7cc4e56553, type: 3}
+    - time: .125
+      value: {fileID: 21300000, guid: 03ebf5cdb0b3a445082ca423a3a1be30, type: 3}
+    - time: .25
+      value: {fileID: 21300000, guid: 9283cfed5aaba41e8aaa4d7cc4e56553, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -41,13 +41,13 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 90ab737ea89094fc6a928948825ea12e, type: 3}
-    - {fileID: 21300000, guid: 36bb9db992e224471895b1bbdfb2cccc, type: 3}
-    - {fileID: 21300000, guid: 90ab737ea89094fc6a928948825ea12e, type: 3}
+    - {fileID: 21300000, guid: 9283cfed5aaba41e8aaa4d7cc4e56553, type: 3}
+    - {fileID: 21300000, guid: 03ebf5cdb0b3a445082ca423a3a1be30, type: 3}
+    - {fileID: 21300000, guid: 9283cfed5aaba41e8aaa4d7cc4e56553, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_StartTime: 0
-    m_StopTime: .208333343
+    m_StopTime: .291666657
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0

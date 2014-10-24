@@ -5,7 +5,7 @@ AnimationClip:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: climb
+  m_Name: GreenCrouch
   serializedVersion: 4
   m_AnimationType: 2
   m_Compressed: 0
@@ -17,12 +17,10 @@ AnimationClip:
   m_FloatCurves: []
   m_PPtrCurves:
   - curve:
-    - time: 0
-      value: {fileID: 21300000, guid: 0c75f2e1857b94995979db32946ff34b, type: 3}
-    - time: .25
-      value: {fileID: 21300000, guid: 7732b29fbada34c32a7c49a717139df8, type: 3}
-    - time: .5
-      value: {fileID: 21300000, guid: 0c75f2e1857b94995979db32946ff34b, type: 3}
+    - time: -0
+      value: {fileID: 21300000, guid: b5458d982b27d427e81d0aa73807dbd6, type: 3}
+    - time: .125
+      value: {fileID: 21300000, guid: b5458d982b27d427e81d0aa73807dbd6, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -41,13 +39,12 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 0c75f2e1857b94995979db32946ff34b, type: 3}
-    - {fileID: 21300000, guid: 7732b29fbada34c32a7c49a717139df8, type: 3}
-    - {fileID: 21300000, guid: 0c75f2e1857b94995979db32946ff34b, type: 3}
+    - {fileID: 21300000, guid: b5458d982b27d427e81d0aa73807dbd6, type: 3}
+    - {fileID: 21300000, guid: b5458d982b27d427e81d0aa73807dbd6, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_StartTime: 0
-    m_StopTime: .541666687
+    m_StopTime: .166666672
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
