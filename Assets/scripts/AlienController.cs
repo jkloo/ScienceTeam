@@ -7,8 +7,7 @@ public class AlienController : MonoBehaviour {
 
     public float jumpForce = 500.0f;
 
-    public float glideFactor = 0.01f;
-    public float glideDuration = 0.5f;
+    public float glideFactor = 0.2f;
 
     public LayerMask whatIsGround;
     public Transform groundCheck;
@@ -18,13 +17,14 @@ public class AlienController : MonoBehaviour {
 
     private Animator anim;
 
+    private float hSpeed = 0.0f;
     private float vSpeed = 0.0f;
     private bool facingRight = true;
 
     private bool crouched = false;
 
-    private float groundRadius = 0.2f;
     private bool grounded = false;
+    private float groundRadius = 0.2f;
 
     private bool glide = false;
     private bool canGlide = false;
@@ -40,92 +40,139 @@ public class AlienController : MonoBehaviour {
         Respawn();
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
-
         if(respawn)
         {
+            hSpeed = 0.0f;
             grounded = true;
             vSpeed = 0.0f;
-            canGlide = false;
         }
-
         else
         {
             grounded = Physics2D.OverlapCircle(groundCheck.position,
                                                groundRadius,
                                                whatIsGround);
             vSpeed = rigidbody2D.velocity.y;
+            hSpeed = Input.GetAxis("Horizontal");
         }
+
+        anim.SetFloat("Speed", Mathf.Abs(hSpeed));
         anim.SetBool("Ground", grounded);
         anim.SetBool("Crouch", crouched);
         anim.SetFloat("vSpeed", vSpeed);
-        if(!crouched && !respawn)
-        {
-            float move = Input.GetAxis("Horizontal");
-            rigidbody2D.velocity = new Vector2(move * maxSpeed, rigidbody2D.velocity.y);
-            anim.SetFloat("Speed", Mathf.Abs(move));
-            HandleFlip(move);
-        }
+        Flip(hSpeed);
 
     }
 
+    // Update is called once per frame
     void Update()
     {
         if(respawn) return;
 
+        Move();
         if(grounded)
         {
-            if(glide)
-            {
-                glide = false;
-                rigidbody2D.gravityScale /= glideFactor;
-            }
+            StopGlide();
             if(Input.GetButtonDown("Jump"))
             {
-                canGlide = true;
-                anim.SetBool("Ground", false);
-                rigidbody2D.AddForce(new Vector2(0, jumpForce));
+                Jump();
             }
             crouched = Input.GetButton("Crouch");
         }
         else
         {
-            if(Input.GetButtonDown("Glide") && !glide && canGlide)
+            if(Input.GetButtonDown("Glide"))
             {
-                glide = true;
-                rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0.1f * rigidbody2D.velocity.y);
-                rigidbody2D.gravityScale *= glideFactor;
-                canGlide = false;
+                StartGlide();
             }
-            else if(Input.GetButtonUp("Glide") && glide)
+            else if(Input.GetButtonUp("Glide"))
             {
-                rigidbody2D.gravityScale /= glideFactor;
-                glide = false;
+                StopGlide();
             }
             crouched = false;
         }
     }
 
-    void HandleFlip(float move)
+    bool Flip(float move)
     {
-        if (move > 0 && !facingRight)
+        if ((move > 0 && !facingRight) || (move < 0 && facingRight))
         {
-            Flip();
+            facingRight = !facingRight;
+            Vector3 theScale = transform.localScale;
+            theScale.x *= -1;
+            transform.localScale = theScale;
+            return true;
         }
-        else if (move < 0 && facingRight)
+        return false;
+    }
+
+    void Move()
+    {
+        if(!crouched)
         {
-            Flip();
+            rigidbody2D.velocity = new Vector2(hSpeed * maxSpeed, rigidbody2D.velocity.y);
         }
     }
 
-    void Flip()
+    void Jump()
     {
-        facingRight = !facingRight;
-        Vector3 theScale = transform.localScale;
-        theScale.x *= -1;
-        transform.localScale = theScale;
+        canGlide = true;
+        rigidbody2D.AddForce(new Vector2(0, jumpForce));
+    }
+
+    void StartGlide()
+    {
+        if(!glide && canGlide)
+        {
+            glide = true;
+            canGlide = false;
+            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0.1f * rigidbody2D.velocity.y);
+            rigidbody2D.gravityScale *= glideFactor;
+        }
+    }
+
+    void StopGlide()
+    {
+        if(glide)
+        {
+            rigidbody2D.gravityScale /= glideFactor;
+            glide = false;
+        }
+    }
+
+    void MoveTo(Vector3 position)
+    {
+        transform.position = position;
+    }
+
+    void Respawn()
+    {
+        StopGlide();
+        StartCoroutine(RespawnWait());
+    }
+
+    IEnumerator RespawnWait()
+    {
+        respawn = true;
+        rigidbody2D.isKinematic = true;
+
+        anim.SetTrigger("Respawn");
+        yield return new WaitForSeconds(respawnTime);
+
+        rigidbody2D.isKinematic = false;
+        respawn = false;
+    }
+
+    void LoadNextLevel(string nextLevel)
+    {
+        StartCoroutine(LoadNextLevelWait(nextLevel));
+    }
+
+    IEnumerator LoadNextLevelWait(string nextLevel)
+    {
+        yield return new WaitForSeconds(respawnTime);
+        Application.LoadLevel(nextLevel);
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -134,7 +181,7 @@ public class AlienController : MonoBehaviour {
         {
             respawnPosition = other.gameObject.transform;
         }
-        else if(other.gameObject.CompareTag("Finish") && !respawn)
+        else if(other.gameObject.CompareTag("Finish"))
         {
             Respawn();
             NextLevelLoader nextLevelLoader = other.GetComponent<NextLevelLoader>();
@@ -149,45 +196,6 @@ public class AlienController : MonoBehaviour {
             MoveTo(respawnPosition.position);
             Respawn();
         }
-    }
-
-    void Respawn()
-    {
-        if(glide)
-        {
-            rigidbody2D.gravityScale /= glideFactor;
-        }
-        StartCoroutine(RespawnWait());
-    }
-
-    void MoveTo(Vector3 position)
-    {
-        transform.position = position;
-    }
-
-    IEnumerator RespawnWait()
-    {
-        respawn = true;
-        float gravity = rigidbody2D.gravityScale;
-        rigidbody2D.gravityScale = 0.0f;
-        rigidbody2D.velocity = Vector2.zero;
-
-        anim.SetTrigger("Respawn");
-        yield return new WaitForSeconds(respawnTime);
-
-        rigidbody2D.gravityScale = gravity;
-        respawn = false;
-    }
-
-    void LoadNextLevel(string nextLevel)
-    {
-        StartCoroutine(LoadNextLevelWait(nextLevel));
-    }
-
-    IEnumerator LoadNextLevelWait(string nextLevel)
-    {
-        yield return new WaitForSeconds(respawnTime);
-        Application.LoadLevel(nextLevel);
     }
 }
 
