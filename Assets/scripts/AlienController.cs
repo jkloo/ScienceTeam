@@ -1,6 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum AlienType {
+    BLUE = 0,
+    PINK,
+    BEIGE,
+    GREEN,
+    YELLOW
+}
+
 public class AlienController : MonoBehaviour {
 
     public float maxSpeed = 7.5f;
@@ -12,9 +20,9 @@ public class AlienController : MonoBehaviour {
     public LayerMask whatIsGround;
     public Transform groundCheck;
 
-    public Collider2D safeZone;
     public Transform respawnPosition;
 
+    public AlienType alienType;
     private Animator anim;
 
     private float hSpeed = 0.0f;
@@ -32,12 +40,12 @@ public class AlienController : MonoBehaviour {
     private bool respawn = false;
     private float respawnTime = 0.5f;
 
-    // Use this for initialization
+
     void Start()
     {
         anim = GetComponent<Animator>();
         MoveTo(respawnPosition.position);
-        Respawn();
+        Spin();
     }
 
     void FixedUpdate()
@@ -65,36 +73,38 @@ public class AlienController : MonoBehaviour {
 
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(respawn) return;
 
         Move();
+        crouched = Input.GetButton("Crouch");
+
         if(grounded)
         {
             StopGlide();
-            if(Input.GetButtonDown("Jump"))
-            {
-                Jump();
-            }
-            crouched = Input.GetButton("Crouch");
         }
-        else
+
+        if(Input.GetButtonDown("Jump"))
         {
-            if(Input.GetButtonDown("Glide"))
-            {
-                StartGlide();
-            }
-            else if(Input.GetButtonUp("Glide"))
-            {
-                StopGlide();
-            }
-            crouched = false;
+            Jump();
         }
+
+        if(Input.GetButtonDown("Special"))
+        {
+            StartSpecial();
+        }
+        else if(Input.GetButtonUp("Special"))
+        {
+            StopSpecial();
+        }
+
     }
 
-    bool Flip(float move)
+    /*
+    * Basic player movement functions
+    */
+    void Flip(float move)
     {
         if ((move > 0 && !facingRight) || (move < 0 && facingRight))
         {
@@ -102,9 +112,7 @@ public class AlienController : MonoBehaviour {
             Vector3 theScale = transform.localScale;
             theScale.x *= -1;
             transform.localScale = theScale;
-            return true;
         }
-        return false;
     }
 
     void Move()
@@ -117,8 +125,55 @@ public class AlienController : MonoBehaviour {
 
     void Jump()
     {
-        canGlide = true;
-        rigidbody2D.AddForce(new Vector2(0, jumpForce));
+        if(grounded)
+        {
+            canGlide = true;
+            rigidbody2D.AddForce(new Vector2(0, jumpForce));
+        }
+    }
+
+
+    /*
+    * AlienType based special abilities
+    */
+    void StartSpecial()
+    {
+        switch(alienType)
+        {
+            case AlienType.BLUE:
+                StartGlide();
+                break;
+            case AlienType.PINK:
+                break;
+            case AlienType.BEIGE:
+                break;
+            case AlienType.GREEN:
+                break;
+            case AlienType.YELLOW:
+                break;
+            default:
+                break;
+        }
+    }
+
+    void StopSpecial()
+    {
+        switch(alienType)
+        {
+            case AlienType.BLUE:
+                StopGlide();
+                break;
+            case AlienType.PINK:
+                break;
+            case AlienType.BEIGE:
+                break;
+            case AlienType.GREEN:
+                break;
+            case AlienType.YELLOW:
+                break;
+            default:
+                break;
+        }
     }
 
     void StartGlide()
@@ -141,27 +196,42 @@ public class AlienController : MonoBehaviour {
         }
     }
 
+    /*
+    * Player object manipulation
+    */
+    void ChangeAlienType(AlienType newType)
+    {
+        alienType = newType;
+        Spin();
+    }
+
     void MoveTo(Vector3 position)
     {
         transform.position = position;
     }
 
-    void Respawn()
+    void Spin()
     {
-        StopGlide();
-        StartCoroutine(RespawnWait());
+        StopSpecial();
+        StartCoroutine(SpinWait());
     }
 
-    IEnumerator RespawnWait()
+    IEnumerator SpinWait()
     {
         respawn = true;
         rigidbody2D.isKinematic = true;
 
-        anim.SetTrigger("Respawn");
+        anim.SetTrigger("Spin");
         yield return new WaitForSeconds(respawnTime);
 
         rigidbody2D.isKinematic = false;
         respawn = false;
+    }
+
+    void Respawn()
+    {
+        MoveTo(respawnPosition.position);
+        Spin();
     }
 
     void LoadNextLevel(string nextLevel)
@@ -175,6 +245,9 @@ public class AlienController : MonoBehaviour {
         Application.LoadLevel(nextLevel);
     }
 
+    /*
+    * Collision/Trigger event handlers
+    */
     void OnTriggerEnter2D(Collider2D other)
     {
         if(other.gameObject.CompareTag("Checkpoint"))
@@ -183,17 +256,20 @@ public class AlienController : MonoBehaviour {
         }
         else if(other.gameObject.CompareTag("Finish"))
         {
-            Respawn();
+            Spin();
             NextLevelLoader nextLevelLoader = other.GetComponent<NextLevelLoader>();
             LoadNextLevel(nextLevelLoader.nextLevel);
+        }
+        else if(other.gameObject.CompareTag("DeathZone"))
+        {
+            Respawn();
         }
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if(other == safeZone)
+        if(other.gameObject.CompareTag("SafeZone"))
         {
-            MoveTo(respawnPosition.position);
             Respawn();
         }
     }
