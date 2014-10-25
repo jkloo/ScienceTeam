@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public enum AlienType {
     BLUE = 0,
@@ -19,11 +20,16 @@ public class AlienController : MonoBehaviour {
 
     public LayerMask whatIsGround;
     public Transform groundCheck;
+    public SpriteRenderer spriteRenderer;
 
     public Transform respawnPosition;
 
     public AlienType alienType;
     private Animator anim;
+
+    private Color phaseColor = new Color(1f, 1f, 1f, 0.5f);
+    private Color phaseableColor = new Color(1f, 1f, 1f, 0.9f);
+    private Color normalColor = new Color(1f, 1f, 1f, 1f);
 
     private float hSpeed = 0.0f;
     private float vSpeed = 0.0f;
@@ -38,7 +44,7 @@ public class AlienController : MonoBehaviour {
     private bool canGlide = false;
 
     private bool phase = false;
-    private bool canPhase = false;
+    private bool canPhase = true;
 
     private bool respawn = false;
     private float respawnTime = 0.5f;
@@ -72,6 +78,7 @@ public class AlienController : MonoBehaviour {
         anim.SetBool("Ground", grounded);
         anim.SetBool("Crouch", crouched);
         anim.SetFloat("vSpeed", vSpeed);
+        spriteRenderer.color = phase ? phaseColor : normalColor;
         Flip(hSpeed);
 
     }
@@ -144,10 +151,10 @@ public class AlienController : MonoBehaviour {
         switch(alienType)
         {
             case AlienType.BLUE:
-                StartGlide();
+                StartPhase();
                 break;
             case AlienType.PINK:
-                StartPhase();
+                StartGlide();
                 break;
             case AlienType.BEIGE:
                 break;
@@ -165,9 +172,10 @@ public class AlienController : MonoBehaviour {
         switch(alienType)
         {
             case AlienType.BLUE:
-                StopGlide();
+                StopPhase();
                 break;
             case AlienType.PINK:
+                StopGlide();
                 break;
             case AlienType.BEIGE:
                 break;
@@ -206,6 +214,33 @@ public class AlienController : MonoBehaviour {
         {
             phase = true;
             canPhase = false;
+            GameObject[] walls = GameObject.FindGameObjectsWithTag("Phaseable");
+            foreach(GameObject wall in walls)
+            {
+				wall.collider2D.isTrigger = true;
+                wall.GetComponent<SpriteRenderer>().color = phaseableColor;
+            }
+            spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f);
+        }
+    }
+
+    void StopPhase()
+    {
+
+        canPhase = true;
+        phase = false;
+        GameObject[] walls = GameObject.FindGameObjectsWithTag("Phaseable");
+        foreach(GameObject wall in walls)
+        {
+            if(!collider2D.bounds.Intersects(wall.collider2D.bounds))
+            {
+                wall.collider2D.isTrigger = false;
+				wall.GetComponent<SpriteRenderer>().color = normalColor;
+            }
+            else
+            {
+                phase = true;
+            }
         }
     }
 
@@ -285,13 +320,9 @@ public class AlienController : MonoBehaviour {
         {
             Respawn();
         }
-    }
-
-    void OnCollisionEnter2D(Collision2D other)
-    {
-        if(other.gameObject.CompareTag("Phaseable") && phase)
+        else if(other.gameObject.CompareTag("Phaseable"))
         {
-            other.gameObject.collider.isTrigger = true;
+            StopPhase();
         }
     }
 }
