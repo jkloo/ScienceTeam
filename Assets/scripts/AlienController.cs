@@ -37,6 +37,9 @@ public class AlienController : MonoBehaviour {
     private bool glide = false;
     private bool canGlide = false;
 
+    private bool phase = false;
+    private bool canPhase = false;
+
     private bool respawn = false;
     private float respawnTime = 0.5f;
 
@@ -144,6 +147,7 @@ public class AlienController : MonoBehaviour {
                 StartGlide();
                 break;
             case AlienType.PINK:
+                StartPhase();
                 break;
             case AlienType.BEIGE:
                 break;
@@ -193,6 +197,15 @@ public class AlienController : MonoBehaviour {
         {
             rigidbody2D.gravityScale /= glideFactor;
             glide = false;
+        }
+    }
+
+    void StartPhase()
+    {
+        if(!phase && canPhase)
+        {
+            phase = true;
+            canPhase = false;
         }
     }
 
@@ -271,6 +284,14 @@ public class AlienController : MonoBehaviour {
         if(other.gameObject.CompareTag("SafeZone"))
         {
             Respawn();
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if(other.gameObject.CompareTag("Phaseable") && phase)
+        {
+            other.gameObject.collider.isTrigger = true;
         }
     }
 }
