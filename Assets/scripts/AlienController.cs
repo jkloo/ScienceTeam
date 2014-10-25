@@ -53,6 +53,7 @@ public class AlienController : MonoBehaviour {
     void Start()
     {
         anim = GetComponent<Animator>();
+        alienType = AlienType.BLUE;
         MoveTo(respawnPosition.position);
         Spin();
     }
@@ -139,6 +140,8 @@ public class AlienController : MonoBehaviour {
         {
             canGlide = true;
             rigidbody2D.AddForce(new Vector2(0, jumpForce));
+			audio.pitch = Random.Range(0.9f, 1.0f);
+			audio.Play();
         }
     }
 
