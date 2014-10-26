@@ -163,7 +163,7 @@ public class AlienController : MonoBehaviour {
                 StartGlide();
                 break;
             case AlienType.PINK:
-                InvertGravity();
+                StartInvertGravity();
                 break;
             case AlienType.BEIGE:
                 break;
@@ -185,7 +185,7 @@ public class AlienController : MonoBehaviour {
                 StopGlide();
                 break;
             case AlienType.PINK:
-                InvertGravity();
+                StopInvertGravity();
                 break;
             case AlienType.BEIGE:
                 break;
@@ -255,11 +255,24 @@ public class AlienController : MonoBehaviour {
         }
     }
 
-    void InvertGravity()
+    void StartInvertGravity()
     {
-        if(grounded || (respawn && gravInvert))
+        if(grounded)
         {
-            gravInvert = !gravInvert;
+            gravInvert = true;
+            rigidbody2D.gravityScale *= -1;
+            jumpForce *= -1;
+            Vector3 theScale = transform.localScale;
+            theScale.y *= -1;
+            transform.localScale = theScale;
+        }
+    }
+
+    void StopInvertGravity()
+    {
+        if(gravInvert)
+        {
+            gravInvert = false;
             rigidbody2D.gravityScale *= -1;
             jumpForce *= -1;
             Vector3 theScale = transform.localScale;
@@ -273,7 +286,7 @@ public class AlienController : MonoBehaviour {
     */
     void ChangeAlienType(AlienType newType)
     {
-
+        StopSpecial();
         GameObject camera = GameObject.FindGameObjectWithTag("MainCamera");
         camera.GetComponent<LevelHandler>().SetActiveAlienByType(GetNextAlienType());
     }
@@ -285,6 +298,8 @@ public class AlienController : MonoBehaviour {
             case AlienType.BLUE:
                 return AlienType.GREEN;
             case AlienType.GREEN:
+                return AlienType.PINK;
+            case AlienType.PINK:
                 return AlienType.BLUE;
             default:
                 return AlienType.BLUE;
