@@ -1973,12 +1973,12 @@ Transform:
   m_PrefabInternal: {fileID: 762266058}
   m_GameObject: {fileID: 735238002}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 21.0599995, y: 2, z: -10}
+  m_LocalPosition: {x: .600000024, y: 15, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 446091712}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
 --- !u!114 &735238008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1994,7 +1994,7 @@ MonoBehaviour:
   xMargin: 1
   yMargin: 1
   maxX: 9
-  maxY: 100000
+  maxY: 15
   minX: -9
   minY: 2
   player: {fileID: 905983119}
@@ -2187,11 +2187,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400000, guid: 68635406f04b449e7bec78129e36e609, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 21.0599995
+      value: .600000024
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 68635406f04b449e7bec78129e36e609, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 2
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 68635406f04b449e7bec78129e36e609, type: 2}
       propertyPath: m_LocalPosition.z
@@ -2225,6 +2225,10 @@ Prefab:
       propertyPath: player
       value: 
       objectReference: {fileID: 905983119}
+    - target: {fileID: 11400000, guid: 68635406f04b449e7bec78129e36e609, type: 2}
+      propertyPath: maxY
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 68635406f04b449e7bec78129e36e609, type: 2}
   m_RootGameObject: {fileID: 735238002}
@@ -2575,7 +2579,7 @@ Transform:
   m_Children:
   - {fileID: 1502077534}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
 --- !u!82 &905983120
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4991,6 +4995,10 @@ Prefab:
     - target: {fileID: 8200000, guid: d27bbd92955694ac4a3c2b11cef861c0, type: 2}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5000000, guid: d27bbd92955694ac4a3c2b11cef861c0, type: 2}
+      propertyPath: m_GravityScale
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d27bbd92955694ac4a3c2b11cef861c0, type: 2}

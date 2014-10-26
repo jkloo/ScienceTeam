@@ -46,8 +46,11 @@ public class AlienController : MonoBehaviour {
     private bool phase = false;
     private bool canPhase = true;
 
+    private bool gravInvert = false;
+
     private bool respawn = false;
-    private float respawnTime = 0.5f;
+    private bool spin = false;
+    private float spinTime = 0.5f;
 
     private Vector2 offScreenPos = new Vector2(-1000000f, 0);
 
@@ -62,7 +65,7 @@ public class AlienController : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if(respawn)
+        if(spin)
         {
             hSpeed = 0.0f;
             grounded = true;
@@ -73,7 +76,7 @@ public class AlienController : MonoBehaviour {
             grounded = Physics2D.OverlapCircle(groundCheck.position,
                                                groundRadius,
                                                whatIsGround);
-            vSpeed = rigidbody2D.velocity.y;
+            vSpeed = rigidbody2D.velocity.y * (gravInvert ? -1 : 1);
             hSpeed = Input.GetAxis("Horizontal");
         }
 
@@ -88,7 +91,7 @@ public class AlienController : MonoBehaviour {
 
     void Update()
     {
-        if(respawn) return;
+        if(spin) return;
 
         Move();
         crouched = Input.GetButton("Crouch");
@@ -164,6 +167,7 @@ public class AlienController : MonoBehaviour {
                 StartGlide();
                 break;
             case AlienType.PINK:
+                InvertGravity();
                 break;
             case AlienType.BEIGE:
                 break;
@@ -185,6 +189,7 @@ public class AlienController : MonoBehaviour {
                 StopGlide();
                 break;
             case AlienType.PINK:
+                InvertGravity();
                 break;
             case AlienType.BEIGE:
                 break;
@@ -254,6 +259,19 @@ public class AlienController : MonoBehaviour {
         }
     }
 
+    void InvertGravity()
+    {
+        if(grounded || (respawn && gravInvert))
+        {
+            gravInvert = !gravInvert;
+            rigidbody2D.gravityScale *= -1;
+            jumpForce *= -1;
+            Vector3 theScale = transform.localScale;
+            theScale.y *= -1;
+            transform.localScale = theScale;
+        }
+    }
+
     /*
     * Player object manipulation
     */
@@ -278,26 +296,28 @@ public class AlienController : MonoBehaviour {
 
     void Spin()
     {
-        StopSpecial();
         StartCoroutine(SpinWait());
     }
 
     IEnumerator SpinWait()
     {
-        respawn = true;
+        spin = true;
         rigidbody2D.isKinematic = true;
 
         anim.SetTrigger("Spin");
-        yield return new WaitForSeconds(respawnTime);
+        yield return new WaitForSeconds(spinTime);
 
         rigidbody2D.isKinematic = false;
-        respawn = false;
+        spin = false;
     }
 
     void Respawn()
     {
+        respawn = true;
         MoveTo(respawnPosition.position);
+        StopSpecial();
         Spin();
+        respawn = false;
     }
 
     void LoadNextLevel(string nextLevel)
@@ -307,7 +327,7 @@ public class AlienController : MonoBehaviour {
 
     IEnumerator LoadNextLevelWait(string nextLevel)
     {
-        yield return new WaitForSeconds(respawnTime);
+        yield return new WaitForSeconds(spinTime);
         Application.LoadLevel(nextLevel);
     }
 
