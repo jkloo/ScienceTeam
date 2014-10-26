@@ -49,6 +49,8 @@ public class AlienController : MonoBehaviour {
     private bool respawn = false;
     private float respawnTime = 0.5f;
 
+    private Vector2 offScreenPos = new Vector2(-1000000f, 0);
+
 
     void Start()
     {
@@ -110,6 +112,11 @@ public class AlienController : MonoBehaviour {
             StopSpecial();
         }
 
+        if(Input.GetButtonDown("Change"))
+        {
+            ChangeAlienType(AlienType.GREEN);
+        }
+
     }
 
     /*
@@ -154,14 +161,14 @@ public class AlienController : MonoBehaviour {
         switch(alienType)
         {
             case AlienType.BLUE:
-                StartPhase();
+                StartGlide();
                 break;
             case AlienType.PINK:
-                StartGlide();
                 break;
             case AlienType.BEIGE:
                 break;
             case AlienType.GREEN:
+                StartPhase();
                 break;
             case AlienType.YELLOW:
                 break;
@@ -175,14 +182,14 @@ public class AlienController : MonoBehaviour {
         switch(alienType)
         {
             case AlienType.BLUE:
-                StopPhase();
+                StopGlide();
                 break;
             case AlienType.PINK:
-                StopGlide();
                 break;
             case AlienType.BEIGE:
                 break;
             case AlienType.GREEN:
+                StopPhase();
                 break;
             case AlienType.YELLOW:
                 break;
@@ -254,6 +261,14 @@ public class AlienController : MonoBehaviour {
     {
         alienType = newType;
         Spin();
+        GameObject newAlien = GameObject.Find("greenAlien");
+        if(newAlien)
+        {
+            newAlien.GetComponent<AlienController>().MoveTo(transform.position);
+            newAlien.GetComponent<AlienController>().alienType = newType;
+            gameObject.SetActive(false);
+            MoveTo(offScreenPos);
+        }
     }
 
     void MoveTo(Vector3 position)

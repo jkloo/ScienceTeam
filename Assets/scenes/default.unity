@@ -1978,7 +1978,7 @@ Transform:
   m_Children:
   - {fileID: 446091712}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
 --- !u!114 &735238008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2575,7 +2575,7 @@ Transform:
   m_Children:
   - {fileID: 1502077534}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
 --- !u!82 &905983120
 AudioSource:
   m_ObjectHideFlags: 0
