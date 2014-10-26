@@ -7,6 +7,8 @@ public class LevelHandler : MonoBehaviour {
     private GameObject blueAlien;
     private GameObject greenAlien;
     private GameObject pinkAlien;
+    private GameObject yellowAlien;
+    private GameObject beigeAlien;
 
 
     void Awake()
@@ -19,6 +21,12 @@ public class LevelHandler : MonoBehaviour {
 
         pinkAlien = Instantiate(Resources.Load("pinkAlien")) as GameObject;
         SetupAlien(pinkAlien, "pinkAlien");
+
+        beigeAlien = Instantiate(Resources.Load("beigeAlien")) as GameObject;
+        SetupAlien(beigeAlien, "beigeAlien");
+
+        yellowAlien = Instantiate(Resources.Load("yellowAlien")) as GameObject;
+        SetupAlien(yellowAlien, "yellowAlien");
 
         SetActiveAlien(blueAlien);
     }
@@ -64,6 +72,12 @@ public class LevelHandler : MonoBehaviour {
                 break;
             case AlienType.PINK:
                 newAlien = pinkAlien;
+                break;
+            case AlienType.BEIGE:
+                newAlien = beigeAlien;
+                break;
+            case AlienType.YELLOW:
+                newAlien = yellowAlien;
                 break;
             default:
                 return;

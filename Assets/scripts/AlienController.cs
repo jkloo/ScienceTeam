@@ -300,9 +300,13 @@ public class AlienController : MonoBehaviour {
             case AlienType.GREEN:
                 return AlienType.PINK;
             case AlienType.PINK:
+                return AlienType.BEIGE;
+            case AlienType.BEIGE:
+                return AlienType.YELLOW;
+            case AlienType.YELLOW:
                 return AlienType.BLUE;
             default:
-                return AlienType.BLUE;
+                return alienType;
         }
     }
 
