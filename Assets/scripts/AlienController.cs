@@ -22,7 +22,7 @@ public class AlienController : MonoBehaviour {
     public Transform groundCheck;
     public SpriteRenderer spriteRenderer;
 
-    public Transform respawnPosition;
+    public Transform respawnPosition = null;
 
     public AlienType alienType;
     private Animator anim;
@@ -52,14 +52,10 @@ public class AlienController : MonoBehaviour {
     private bool spin = false;
     private float spinTime = 0.5f;
 
-    private Vector2 offScreenPos = new Vector2(-1000000f, 0);
-
 
     void Start()
     {
         anim = GetComponent<Animator>();
-        alienType = AlienType.BLUE;
-        MoveTo(respawnPosition.position);
         Spin();
     }
 
@@ -277,15 +273,21 @@ public class AlienController : MonoBehaviour {
     */
     void ChangeAlienType(AlienType newType)
     {
-        alienType = newType;
-        Spin();
-        GameObject newAlien = GameObject.Find("greenAlien");
-        if(newAlien)
+
+        GameObject camera = GameObject.FindGameObjectWithTag("MainCamera");
+        camera.GetComponent<LevelHandler>().SetActiveAlienByType(GetNextAlienType());
+    }
+
+    AlienType GetNextAlienType()
+    {
+        switch(alienType)
         {
-            newAlien.GetComponent<AlienController>().MoveTo(transform.position);
-            newAlien.GetComponent<AlienController>().alienType = newType;
-            gameObject.SetActive(false);
-            MoveTo(offScreenPos);
+            case AlienType.BLUE:
+                return AlienType.GREEN;
+            case AlienType.GREEN:
+                return AlienType.BLUE;
+            default:
+                return AlienType.BLUE;
         }
     }
 
@@ -294,7 +296,7 @@ public class AlienController : MonoBehaviour {
         transform.position = position;
     }
 
-    void Spin()
+    public void Spin()
     {
         StartCoroutine(SpinWait());
     }
