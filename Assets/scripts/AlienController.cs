@@ -48,6 +48,9 @@ public class AlienController : MonoBehaviour {
 
     private bool gravInvert = false;
 
+    private bool shrink = false;
+    private float shrinkFactor = 0.5f;
+
     private bool respawn = false;
     private bool spin = false;
     private float spinTime = 0.5f;
@@ -171,6 +174,7 @@ public class AlienController : MonoBehaviour {
                 StartPhase();
                 break;
             case AlienType.YELLOW:
+                StartShrink();
                 break;
             default:
                 break;
@@ -193,6 +197,7 @@ public class AlienController : MonoBehaviour {
                 StopPhase();
                 break;
             case AlienType.YELLOW:
+                StopShrink();
                 break;
             default:
                 break;
@@ -278,6 +283,29 @@ public class AlienController : MonoBehaviour {
             Vector3 theScale = transform.localScale;
             theScale.y *= -1;
             transform.localScale = theScale;
+        }
+    }
+
+    void StartShrink()
+    {
+        shrink = true;
+        Vector3 theScale = transform.localScale;
+        theScale.x *= shrinkFactor;
+        theScale.y *= shrinkFactor;
+        transform.localScale = theScale;
+        groundRadius *= shrinkFactor;
+    }
+
+    void StopShrink()
+    {
+        if(shrink)
+        {
+            shrink = false;
+            Vector3 theScale = transform.localScale;
+            theScale.x /= shrinkFactor;
+            theScale.y /= shrinkFactor;
+            transform.localScale = theScale;
+            groundRadius /= shrinkFactor;
         }
     }
 
@@ -385,4 +413,3 @@ public class AlienController : MonoBehaviour {
         }
     }
 }
-
