@@ -388,6 +388,12 @@ public class AlienController : MonoBehaviour {
         if(other.gameObject.CompareTag("Checkpoint"))
         {
             respawnPosition = other.gameObject.transform;
+            GameObject[] checkpoints = GameObject.FindGameObjectsWithTag("Checkpoint");
+            foreach(GameObject cp in checkpoints)
+            {
+                cp.GetComponent<Animator>().SetBool("active", false);
+            }
+            other.gameObject.GetComponent<Animator>().SetBool("active", true);
         }
         else if(other.gameObject.CompareTag("Finish"))
         {

@@ -10,6 +10,7 @@ GameObject:
   - 4: {fileID: 400000}
   - 212: {fileID: 21200000}
   - 61: {fileID: 6100000}
+  - 95: {fileID: 9500000}
   m_Layer: 10
   m_Name: levelCheckpoint
   m_TagString: Checkpoint
@@ -40,6 +41,21 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_Size: {x: .699999988, y: .699999988}
   m_Center: {x: 0, y: 0}
+--- !u!95 &9500000
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1d09bf5c155f44c8b8acc85a2068139d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 1
+  m_ApplyRootMotion: 0
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -60,7 +76,7 @@ SpriteRenderer:
   m_ScaleInLightmap: 1
   m_SortingLayerID: 3498496861
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: a2158ddfc3bee4cc2ae97506c8d38477, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e7c53ddf77db546a5a49b33c80da43fe, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &100100000
 Prefab:
