@@ -248,14 +248,17 @@ public class AlienController : MonoBehaviour {
         GameObject[] walls = GameObject.FindGameObjectsWithTag("Phaseable");
         foreach(GameObject wall in walls)
         {
-            if(!collider2D.bounds.Intersects(wall.collider2D.bounds))
-            {
-                wall.collider2D.isTrigger = false;
-				wall.GetComponent<SpriteRenderer>().color = normalColor;
-            }
-            else
+            if(collider2D.bounds.Intersects(wall.collider2D.bounds))
             {
                 phase = true;
+            }
+        }
+        if(!phase)
+        {
+            foreach(GameObject wall in walls)
+            {
+                wall.collider2D.isTrigger = false;
+                wall.GetComponent<SpriteRenderer>().color = normalColor;
             }
         }
     }
