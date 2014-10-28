@@ -210,7 +210,8 @@ public class AlienController : MonoBehaviour {
         {
             glide = true;
             canGlide = false;
-            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0.1f * rigidbody2D.velocity.y);
+            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x,
+                                               0.1f * rigidbody2D.velocity.y);
             rigidbody2D.gravityScale *= glideFactor;
         }
     }
@@ -407,6 +408,10 @@ public class AlienController : MonoBehaviour {
         else if(other.gameObject.CompareTag("DeathZone"))
         {
             Respawn();
+        }
+        else if(other.gameObject.CompareTag("Pickup"))
+        {
+            other.gameObject.GetComponent<StarPickup>().PickedUp();
         }
     }
 
