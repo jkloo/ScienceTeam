@@ -55,9 +55,16 @@ public class AlienController : MonoBehaviour {
     private bool spin = false;
     private float spinTime = 0.5f;
 
+    private GameObject manager;
+    private ItemManager itemManager;
+    private LevelManager levelManager;
+
 
     void Start()
     {
+        manager = GameObject.FindGameObjectWithTag("Manager");
+        itemManager = manager.GetComponent<ItemManager>();
+        levelManager = manager.GetComponent<LevelManager>();
         anim = GetComponent<Animator>();
         Spin();
     }
@@ -114,9 +121,25 @@ public class AlienController : MonoBehaviour {
             StopSpecial();
         }
 
-        if(Input.GetButtonDown("Change"))
+        if(Input.GetButtonDown("SwitchBlue"))
+        {
+            ChangeAlienType(AlienType.BLUE);
+        }
+        else if(Input.GetButtonDown("SwitchGreen"))
         {
             ChangeAlienType(AlienType.GREEN);
+        }
+        else if(Input.GetButtonDown("SwitchPink"))
+        {
+            ChangeAlienType(AlienType.PINK);
+        }
+        else if(Input.GetButtonDown("SwitchBeige"))
+        {
+            ChangeAlienType(AlienType.BEIGE);
+        }
+        else if(Input.GetButtonDown("SwitchYellow"))
+        {
+            ChangeAlienType(AlienType.YELLOW);
         }
 
     }
@@ -318,27 +341,14 @@ public class AlienController : MonoBehaviour {
     */
     void ChangeAlienType(AlienType newType)
     {
-        StopSpecial();
-        GameObject manager = GameObject.FindGameObjectWithTag("Manager");
-        manager.GetComponent<LevelManager>().SetActiveAlienByType(GetNextAlienType());
-    }
-
-    AlienType GetNextAlienType()
-    {
-        switch(alienType)
+        if(newType == alienType)
         {
-            case AlienType.BLUE:
-                return AlienType.GREEN;
-            case AlienType.GREEN:
-                return AlienType.PINK;
-            case AlienType.PINK:
-                return AlienType.BEIGE;
-            case AlienType.BEIGE:
-                return AlienType.YELLOW;
-            case AlienType.YELLOW:
-                return AlienType.BLUE;
-            default:
-                return alienType;
+            return;
+        }
+        bool switched = levelManager.SetActiveAlienByType(newType);
+        if(switched)
+        {
+            StopSpecial();
         }
     }
 
@@ -411,8 +421,6 @@ public class AlienController : MonoBehaviour {
         }
         else if(other.gameObject.CompareTag("Item"))
         {
-            GameObject manager = GameObject.FindGameObjectWithTag("Manager");
-            ItemManager itemManager = manager.GetComponent<ItemManager>();
             itemManager.PickUp(other.gameObject);
         }
     }

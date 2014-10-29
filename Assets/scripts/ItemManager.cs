@@ -6,16 +6,19 @@ public enum ItemType
 {
     NONE = -1,
     STAR = 0,
+    TOKEN,
 }
 
 public class ItemManager : MonoBehaviour
 {
-    private List<GameObject> disabledObjects = new List<GameObject>();
     public int nCollectedStars;
     public int nTotalStars;
+    private List<GameObject> disabledObjects = new List<GameObject>();
+    private GameObject manager;
 
     void Start()
     {
+        manager = GameObject.FindGameObjectWithTag("Manager");
         nCollectedStars = 0;
         nTotalStars = 0;
         foreach(GameObject item in GameObject.FindGameObjectsWithTag("Item"))
@@ -36,12 +39,23 @@ public class ItemManager : MonoBehaviour
                 break;
             case ItemType.STAR:
                 nCollectedStars += 1;
-                obj.SetActive(false);
-                disabledObjects.Add(obj);
+                DisableObject(obj);
+                break;
+            case ItemType.TOKEN:
+                AlienType alienType = obj.GetComponent<TokenDetail>().alienType;
+                LevelManager levelManager = manager.GetComponent<LevelManager>();
+                levelManager.ActivateAlien(alienType);
+                DisableObject(obj);
                 break;
             default:
                 break;
         }
+    }
+
+    void DisableObject(GameObject obj)
+    {
+        obj.SetActive(false);
+        disabledObjects.Add(obj);
     }
 
 }

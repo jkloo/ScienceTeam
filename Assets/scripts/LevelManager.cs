@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class LevelManager : MonoBehaviour {
 
@@ -10,9 +11,17 @@ public class LevelManager : MonoBehaviour {
     private GameObject yellowAlien;
     private GameObject beigeAlien;
 
+    private Dictionary<AlienType, bool> activatedAliens = new Dictionary<AlienType, bool>();
+
 
     void Awake()
     {
+        activatedAliens.Add(AlienType.BLUE, false);
+        activatedAliens.Add(AlienType.GREEN, false);
+        activatedAliens.Add(AlienType.PINK, false);
+        activatedAliens.Add(AlienType.BEIGE, false);
+        activatedAliens.Add(AlienType.YELLOW, false);
+
         blueAlien = Instantiate(Resources.Load("blueAlien")) as GameObject;
         SetupAlien(blueAlien, "blueAlien");
 
@@ -29,6 +38,7 @@ public class LevelManager : MonoBehaviour {
         SetupAlien(yellowAlien, "yellowAlien");
 
         SetActiveAlien(blueAlien);
+        activatedAliens[AlienType.BLUE] = true;
     }
 
     void SetupAlien(GameObject alien, string name)
@@ -59,8 +69,13 @@ public class LevelManager : MonoBehaviour {
 
     }
 
-    public void SetActiveAlienByType(AlienType alienType)
+    public bool SetActiveAlienByType(AlienType alienType)
     {
+        if(!activatedAliens[alienType])
+        {
+            return false;
+        }
+
         GameObject newAlien;
         switch(alienType)
         {
@@ -80,8 +95,14 @@ public class LevelManager : MonoBehaviour {
                 newAlien = yellowAlien;
                 break;
             default:
-                return;
+                return false;
         }
         SetActiveAlien(newAlien);
+        return true;
+    }
+
+    public void ActivateAlien(AlienType alienType)
+    {
+        activatedAliens[alienType] = true;
     }
 }
