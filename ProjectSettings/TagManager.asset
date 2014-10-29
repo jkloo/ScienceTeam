@@ -8,6 +8,9 @@ TagManager:
   - DeathZone
   - Phaseable
   - Start
+  - Item
+  - Manager
+  - 
   - Pickup
   - 
   Builtin Layer 0: Default

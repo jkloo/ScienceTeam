@@ -319,8 +319,8 @@ public class AlienController : MonoBehaviour {
     void ChangeAlienType(AlienType newType)
     {
         StopSpecial();
-        GameObject camera = GameObject.FindGameObjectWithTag("MainCamera");
-        camera.GetComponent<LevelHandler>().SetActiveAlienByType(GetNextAlienType());
+        GameObject manager = GameObject.FindGameObjectWithTag("Manager");
+        manager.GetComponent<LevelManager>().SetActiveAlienByType(GetNextAlienType());
     }
 
     AlienType GetNextAlienType()
@@ -409,9 +409,11 @@ public class AlienController : MonoBehaviour {
         {
             Respawn();
         }
-        else if(other.gameObject.CompareTag("Pickup"))
+        else if(other.gameObject.CompareTag("Item"))
         {
-            other.gameObject.GetComponent<StarPickup>().PickedUp();
+            GameObject manager = GameObject.FindGameObjectWithTag("Manager");
+            ItemManager itemManager = manager.GetComponent<ItemManager>();
+            itemManager.PickUp(other.gameObject);
         }
     }
 
