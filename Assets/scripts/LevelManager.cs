@@ -11,6 +11,11 @@ public class LevelManager : MonoBehaviour {
     public float minX = -30f;
     public float minY = 2f;
 
+    public string backgroundPrefab;
+    private float bgwidth = 10.24f;
+    private float yCameraOffset = 2.7f;
+    private float yBgOffset = 2.2f;
+
     private GameObject mainCamera;
 
     private GameObject activeAlien;
@@ -34,6 +39,7 @@ public class LevelManager : MonoBehaviour {
     void Awake()
     {
         mainCamera = Instantiate(Resources.Load("camera")) as GameObject;
+
         Transform[] platforms = GameObject.FindObjectsOfType(typeof(Transform)) as Transform[];
         maxX = platforms[0].position.x;
         minX = platforms[0].position.x;
@@ -53,13 +59,23 @@ public class LevelManager : MonoBehaviour {
                 minY = platform.position.y;
             }
         }
-        minY = minY + 2.7f;
 
+        // Set up camera bounds
         CameraFollow cameraController = mainCamera.GetComponent<CameraFollow>();
         cameraController.minX = minX;
         cameraController.maxX = maxX;
-        cameraController.minY = minY;
+        cameraController.minY = minY + yCameraOffset;
         cameraController.maxY = maxY;
+
+        // Set up background
+        float x = minX - bgwidth;
+        while(x <= maxX + bgwidth)
+        {
+            GameObject bgInst = Instantiate(Resources.Load(backgroundPrefab)) as GameObject;
+            bgInst.transform.position = new Vector2(x, minY + yBgOffset);
+            x += bgwidth;
+        }
+
 
         levelStart = GameObject.FindGameObjectWithTag("Start");
         levelEnd = GameObject.FindGameObjectWithTag("Finish");
