@@ -22,13 +22,10 @@ public class AlienController : MonoBehaviour {
     public Transform groundCheck;
     public SpriteRenderer spriteRenderer;
 
-    public Transform respawnPosition = null;
-
     public AlienType alienType;
     private Animator anim;
 
     private Color phaseColor = new Color(1f, 1f, 1f, 0.5f);
-    private Color phaseableColor = new Color(1f, 1f, 1f, 0.9f);
     private Color normalColor = new Color(1f, 1f, 1f, 1f);
 
     private float hSpeed = 0.0f;
@@ -51,7 +48,6 @@ public class AlienController : MonoBehaviour {
     private bool shrink = false;
     private float shrinkFactor = 0.5f;
 
-    private bool respawn = false;
     private bool spin = false;
     private float spinTime = 0.5f;
 
@@ -60,13 +56,12 @@ public class AlienController : MonoBehaviour {
     private LevelManager levelManager;
 
 
-    void Start()
+    public void Start()
     {
         manager = GameObject.FindGameObjectWithTag("Manager");
         itemManager = manager.GetComponent<ItemManager>();
         levelManager = manager.GetComponent<LevelManager>();
         anim = GetComponent<Animator>();
-        Spin();
     }
 
     void FixedUpdate()
@@ -254,13 +249,8 @@ public class AlienController : MonoBehaviour {
         {
             phase = true;
             canPhase = false;
-            GameObject[] walls = GameObject.FindGameObjectsWithTag("Phaseable");
-            foreach(GameObject wall in walls)
-            {
-				wall.collider2D.isTrigger = true;
-                wall.GetComponent<SpriteRenderer>().color = phaseableColor;
-            }
-            spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f);
+            spriteRenderer.color = phaseColor;
+            levelManager.StartPhaseObjects();
         }
     }
 
@@ -268,22 +258,11 @@ public class AlienController : MonoBehaviour {
     {
 
         canPhase = true;
-        phase = false;
-        GameObject[] walls = GameObject.FindGameObjectsWithTag("Phaseable");
-        foreach(GameObject wall in walls)
-        {
-            if(collider2D.bounds.Intersects(wall.collider2D.bounds))
-            {
-                phase = true;
-            }
-        }
+        phase = !levelManager.CanStopPhaseObjects();
         if(!phase)
         {
-            foreach(GameObject wall in walls)
-            {
-                wall.collider2D.isTrigger = false;
-                wall.GetComponent<SpriteRenderer>().color = normalColor;
-            }
+            levelManager.StopPhaseObjects();
+            spriteRenderer.color = normalColor;
         }
     }
 
@@ -376,22 +355,9 @@ public class AlienController : MonoBehaviour {
 
     void Respawn()
     {
-        respawn = true;
-        MoveTo(respawnPosition.position);
+        levelManager.MoveAlienToRespawn();
         StopSpecial();
         Spin();
-        respawn = false;
-    }
-
-    void LoadNextLevel(string nextLevel)
-    {
-        StartCoroutine(LoadNextLevelWait(nextLevel));
-    }
-
-    IEnumerator LoadNextLevelWait(string nextLevel)
-    {
-        yield return new WaitForSeconds(spinTime);
-        Application.LoadLevel(nextLevel);
     }
 
     /*
@@ -401,19 +367,12 @@ public class AlienController : MonoBehaviour {
     {
         if(other.gameObject.CompareTag("Checkpoint"))
         {
-            respawnPosition = other.gameObject.transform;
-            GameObject[] checkpoints = GameObject.FindGameObjectsWithTag("Checkpoint");
-            foreach(GameObject cp in checkpoints)
-            {
-                cp.GetComponent<Animator>().SetBool("active", false);
-            }
-            other.gameObject.GetComponent<Animator>().SetBool("active", true);
+            levelManager.SetCheckpoint(other.gameObject);
         }
         else if(other.gameObject.CompareTag("Finish"))
         {
             Spin();
-            NextLevelLoader nextLevelLoader = other.GetComponent<NextLevelLoader>();
-            LoadNextLevel(nextLevelLoader.nextLevel);
+            levelManager.LoadNextLevel();
         }
         else if(other.gameObject.CompareTag("DeathZone"))
         {

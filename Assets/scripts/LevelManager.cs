@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class LevelManager : MonoBehaviour {
 
+    public float loadNextLevelTime = 0.5f;
+
     private GameObject activeAlien;
     private GameObject blueAlien;
     private GameObject greenAlien;
@@ -11,11 +13,25 @@ public class LevelManager : MonoBehaviour {
     private GameObject yellowAlien;
     private GameObject beigeAlien;
 
+    private GameObject levelStart;
+    private GameObject levelEnd;
+    private GameObject spawnPosition;
+    private GameObject[] phasableObjects;
+
+    private Color phaseableColor = new Color(1f, 1f, 1f, 0.9f);
+    private Color normalColor = new Color(1f, 1f, 1f, 1f);
+
     private Dictionary<AlienType, bool> activatedAliens = new Dictionary<AlienType, bool>();
 
 
     void Awake()
     {
+        levelStart = GameObject.FindGameObjectWithTag("Start");
+        levelEnd = GameObject.FindGameObjectWithTag("Finish");
+        spawnPosition = levelStart;
+
+        phasableObjects = GameObject.FindGameObjectsWithTag("Phaseable");
+
         activatedAliens.Add(AlienType.BLUE, false);
         activatedAliens.Add(AlienType.GREEN, false);
         activatedAliens.Add(AlienType.PINK, false);
@@ -44,8 +60,7 @@ public class LevelManager : MonoBehaviour {
     void SetupAlien(GameObject alien, string name)
     {
         alien.name = name;
-        GameObject spawnPosition = GameObject.FindGameObjectWithTag("Start");
-        alien.GetComponent<AlienController>().respawnPosition = spawnPosition.transform;
+        alien.GetComponent<AlienController>().Start();
         alien.SetActive(false);
     }
 
@@ -54,19 +69,32 @@ public class LevelManager : MonoBehaviour {
         GameObject camera = GameObject.FindGameObjectWithTag("MainCamera");
         if(activeAlien)
         {
-            alien.GetComponent<AlienController>().respawnPosition = activeAlien.GetComponent<AlienController>().respawnPosition;
             alien.transform.position = activeAlien.transform.position;
             activeAlien.SetActive(false);
         }
         else
         {
-            alien.transform.position = alien.GetComponent<AlienController>().respawnPosition.position;
+            alien.transform.position = spawnPosition.transform.position;
         }
         activeAlien = alien;
         camera.GetComponent<CameraFollow>().player = activeAlien.transform;
         activeAlien.SetActive(true);
         activeAlien.GetComponent<AlienController>().Spin();
+    }
 
+    public void MoveAlienToRespawn()
+    {
+        activeAlien.transform.position = spawnPosition.transform.position;
+    }
+
+    public void SetCheckpoint(GameObject checkpoint)
+    {
+        if(spawnPosition != levelStart)
+        {
+            spawnPosition.GetComponent<Animator>().SetBool("active", false);
+        }
+        spawnPosition = checkpoint;
+        spawnPosition.GetComponent<Animator>().SetBool("active", true);
     }
 
     public bool SetActiveAlienByType(AlienType alienType)
@@ -101,8 +129,50 @@ public class LevelManager : MonoBehaviour {
         return true;
     }
 
+    public void StartPhaseObjects()
+    {
+        foreach(GameObject obj in phasableObjects)
+        {
+            obj.collider2D.isTrigger = true;
+            obj.GetComponent<SpriteRenderer>().color = phaseableColor;
+        }
+    }
+
+    public bool CanStopPhaseObjects()
+    {
+        foreach(GameObject obj in phasableObjects)
+        {
+            if(activeAlien.collider2D.bounds.Intersects(obj.collider2D.bounds))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void StopPhaseObjects()
+    {
+        foreach(GameObject obj in phasableObjects)
+        {
+            obj.collider2D.isTrigger = false;
+            obj.GetComponent<SpriteRenderer>().color = normalColor;
+        }
+    }
+
     public void ActivateAlien(AlienType alienType)
     {
         activatedAliens[alienType] = true;
+    }
+
+    public void LoadNextLevel()
+    {
+        string nextLevel = levelEnd.GetComponent<NextLevelLoader>().nextLevel;
+        StartCoroutine(LoadNextLevelWait(nextLevel));
+    }
+
+    IEnumerator LoadNextLevelWait(string nextLevel)
+    {
+        yield return new WaitForSeconds(loadNextLevelTime);
+        Application.LoadLevel(nextLevel);
     }
 }
