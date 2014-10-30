@@ -34,6 +34,27 @@ public class LevelManager : MonoBehaviour {
     void Awake()
     {
         mainCamera = Instantiate(Resources.Load("camera")) as GameObject;
+        Transform[] platforms = GameObject.FindObjectsOfType(typeof(Transform)) as Transform[];
+        maxX = platforms[0].position.x;
+        minX = platforms[0].position.x;
+        minY = platforms[0].position.y;
+        foreach(Transform platform in platforms)
+        {
+            if(platform.position.x > maxX)
+            {
+                maxX = platform.position.x;
+            }
+            if(platform.position.x < minX)
+            {
+                minX = platform.position.x;
+            }
+            if(platform.position.y < minY)
+            {
+                minY = platform.position.y;
+            }
+        }
+        minY = minY + 2.7f;
+
         CameraFollow cameraController = mainCamera.GetComponent<CameraFollow>();
         cameraController.minX = minX;
         cameraController.maxX = maxX;
