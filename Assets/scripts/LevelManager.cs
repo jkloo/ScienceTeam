@@ -6,6 +6,13 @@ public class LevelManager : MonoBehaviour {
 
     public float loadNextLevelTime = 0.5f;
 
+    public float maxX = 30f;
+    public float maxY = 30f;
+    public float minX = -30f;
+    public float minY = 2f;
+
+    private GameObject mainCamera;
+
     private GameObject activeAlien;
     private GameObject blueAlien;
     private GameObject greenAlien;
@@ -26,6 +33,13 @@ public class LevelManager : MonoBehaviour {
 
     void Awake()
     {
+        mainCamera = Instantiate(Resources.Load("camera")) as GameObject;
+        CameraFollow cameraController = mainCamera.GetComponent<CameraFollow>();
+        cameraController.minX = minX;
+        cameraController.maxX = maxX;
+        cameraController.minY = minY;
+        cameraController.maxY = maxY;
+
         levelStart = GameObject.FindGameObjectWithTag("Start");
         levelEnd = GameObject.FindGameObjectWithTag("Finish");
         spawnPosition = levelStart;
@@ -66,7 +80,6 @@ public class LevelManager : MonoBehaviour {
 
     private void SetActiveAlien(GameObject alien)
     {
-        GameObject camera = GameObject.FindGameObjectWithTag("MainCamera");
         if(activeAlien)
         {
             alien.transform.position = activeAlien.transform.position;
@@ -77,7 +90,7 @@ public class LevelManager : MonoBehaviour {
             alien.transform.position = spawnPosition.transform.position;
         }
         activeAlien = alien;
-        camera.GetComponent<CameraFollow>().player = activeAlien.transform;
+        mainCamera.GetComponent<CameraFollow>().player = activeAlien.transform;
         activeAlien.SetActive(true);
         activeAlien.GetComponent<AlienController>().Spin();
     }
