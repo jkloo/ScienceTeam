@@ -132,9 +132,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xMargin: 1
   yMargin: 1
-  maxX: 13
-  maxY: 15
-  minX: -9
+  maxX: 100000
+  maxY: 100000
+  minX: -100000
   minY: 2
   player: {fileID: 0}
 --- !u!124 &12400000
