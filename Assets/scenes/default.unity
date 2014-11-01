@@ -3835,6 +3835,7 @@ GameObject:
   - 114: {fileID: 659236025}
   - 114: {fileID: 659236027}
   - 114: {fileID: 659236028}
+  - 114: {fileID: 659236029}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Manager
@@ -3898,6 +3899,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85b2b1f7305204c3d9d7076134ae0b22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &659236029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 659236024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd1343f6ceda64f5088be87fc02ed17a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blueAlienToken: {fileID: 2800000, guid: 52fd1b8c78e3944bba8115d4d47ae5dd, type: 3}
+  greenAlienToken: {fileID: 2800000, guid: b4c00ff5a4d91462997d85bc3db8f23a, type: 3}
+  pinkAlienToken: {fileID: 2800000, guid: a9e2e53037c054515abb432ea48e27c8, type: 3}
+  beigeAlienToken: {fileID: 2800000, guid: 262161c1a89f345d381c31ac3671e8f6, type: 3}
+  yellowAlienToken: {fileID: 2800000, guid: b83823c91070e462baeb4cf36809cb3a, type: 3}
+  star: {fileID: 2800000, guid: b20a070a761f14ec29d9d40ffa94d61c, type: 3}
+  zero: {fileID: 2800000, guid: ee63444a59361451ab03668221919a4c, type: 3}
+  one: {fileID: 2800000, guid: 3f6d02fcb93da459ca79dfc58cff9441, type: 3}
+  two: {fileID: 2800000, guid: cfc5ffc3febf64ff596ab3a404823f3c, type: 3}
+  three: {fileID: 2800000, guid: d05e15c0f629743a6b336f4261efcd28, type: 3}
+  four: {fileID: 2800000, guid: 038feeb02a26e4c6f9aec205c7f4d544, type: 3}
+  five: {fileID: 2800000, guid: a271f36556d68465ab2ca4d6113f29a5, type: 3}
+  six: {fileID: 2800000, guid: 641231475e3de490191ccccf8c2ef49a, type: 3}
+  seven: {fileID: 2800000, guid: 4b7bb0600297647e08058e0125b3c768, type: 3}
+  eight: {fileID: 2800000, guid: 36b3d7385fe3845aba9f01b3e6b08f06, type: 3}
+  nine: {fileID: 2800000, guid: d2b1a820f7d8e4589baea0265bf12cb9, type: 3}
 --- !u!1001 &661432526
 Prefab:
   m_ObjectHideFlags: 0
@@ -8419,7 +8447,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 026c32d4f824c4244bfb26dad0e00120, type: 2}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 026c32d4f824c4244bfb26dad0e00120, type: 2}

@@ -154,6 +154,11 @@ public class LevelManager : MonoBehaviour {
             return false;
         }
 
+        if(activeAlien.GetComponent<AlienController>().alienType == alienType)
+        {
+            return false;
+        }
+
         GameObject newAlien;
         switch(alienType)
         {
@@ -212,6 +217,11 @@ public class LevelManager : MonoBehaviour {
     public void ActivateAlien(AlienType alienType)
     {
         activatedAliens[alienType] = true;
+    }
+
+    public Dictionary<AlienType, bool> GetActiveAliens()
+    {
+        return activatedAliens;
     }
 
     public void LoadNextLevel()
