@@ -28,7 +28,7 @@ public class AlienController : MonoBehaviour {
     private Color phaseColor = new Color(1f, 1f, 1f, 0.5f);
     private Color normalColor = new Color(1f, 1f, 1f, 1f);
 
-    private float hSpeed = 0.0f;
+    public float hSpeed = 0.0f;
     private float vSpeed = 0.0f;
     private bool facingRight = true;
 
@@ -78,7 +78,6 @@ public class AlienController : MonoBehaviour {
                                                groundRadius,
                                                whatIsGround);
             vSpeed = rigidbody2D.velocity.y * (gravInvert ? -1 : 1);
-            hSpeed = Input.GetAxis("Horizontal");
         }
 
         anim.SetFloat("Speed", Mathf.Abs(hSpeed));
@@ -94,14 +93,15 @@ public class AlienController : MonoBehaviour {
     {
         if(spin) return;
 
-        Move();
-        crouched = Input.GetButton("Crouch");
 
         if(grounded)
         {
             StopGlide();
         }
 
+#if !UNITY_ANDROID || UNITY_EDITOR
+        hSpeed = Input.GetAxis("Horizontal");
+        crouched = Input.GetButton("Crouch");
         if(Input.GetButtonDown("Jump"))
         {
             Jump();
@@ -136,7 +136,8 @@ public class AlienController : MonoBehaviour {
         {
             ChangeAlienType(AlienType.YELLOW);
         }
-
+#endif
+        Move();
     }
 
     /*
@@ -161,7 +162,7 @@ public class AlienController : MonoBehaviour {
         }
     }
 
-    void Jump()
+    public void Jump()
     {
         if(grounded)
         {
@@ -176,7 +177,7 @@ public class AlienController : MonoBehaviour {
     /*
     * AlienType based special abilities
     */
-    void StartSpecial()
+    public void StartSpecial()
     {
         switch(alienType)
         {
@@ -199,7 +200,7 @@ public class AlienController : MonoBehaviour {
         }
     }
 
-    void StopSpecial()
+    public void StopSpecial()
     {
         switch(alienType)
         {

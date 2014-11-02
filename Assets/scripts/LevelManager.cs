@@ -18,7 +18,7 @@ public class LevelManager : MonoBehaviour {
 
     private GameObject mainCamera;
 
-    private GameObject activeAlien;
+    public GameObject activeAlien;
     private GameObject blueAlien;
     private GameObject greenAlien;
     private GameObject pinkAlien;
@@ -219,7 +219,7 @@ public class LevelManager : MonoBehaviour {
         activatedAliens[alienType] = true;
     }
 
-    public Dictionary<AlienType, bool> GetActiveAliens()
+    public Dictionary<AlienType, bool> GetActivatedAliens()
     {
         return activatedAliens;
     }

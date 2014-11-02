@@ -4,119 +4,135 @@ using System.Collections.Generic;
 
 public class UIManager : MonoBehaviour {
 
-    public Texture2D blueAlienToken;
-    public Texture2D greenAlienToken;
-    public Texture2D pinkAlienToken;
-    public Texture2D beigeAlienToken;
-    public Texture2D yellowAlienToken;
+    public Texture2D zeroImage;
+    public Texture2D oneImage;
+    public Texture2D twoImage;
+    public Texture2D threeImage;
+    public Texture2D fourImage;
+    public Texture2D fiveImage;
+    public Texture2D sixImage;
+    public Texture2D sevenImage;
+    public Texture2D eightImage;
+    public Texture2D nineImage;
 
-    public Texture2D star;
-    public Texture2D zero;
-    public Texture2D one;
-    public Texture2D two;
-    public Texture2D three;
-    public Texture2D four;
-    public Texture2D five;
-    public Texture2D six;
-    public Texture2D seven;
-    public Texture2D eight;
-    public Texture2D nine;
+    public GUITexture starCount;
+    public GUITexture blueToken;
+    public GUITexture greenToken;
+    public GUITexture pinkToken;
+    public GUITexture beigeToken;
+    public GUITexture yellowToken;
+    public GUITexture dPad;
+    public GUITexture aButton;
+    public GUITexture bButton;
 
     private Dictionary<int, Texture2D> numberMap = new Dictionary<int, Texture2D>();
+    private Dictionary<AlienType, bool> activeAliens = new Dictionary<AlienType, bool>();
 
     private GameObject manager;
     private ItemManager itemManager;
     private LevelManager levelManager;
-    private Color inactive = new Color(1, 1, 1, 0.25f);
-    private Color active = new Color(1, 1, 1, 1);
-    private Color complete = new Color(0.98f, 0.78f, 0.2f);
+    private Color inactiveColor = new Color(0.5f, 0.5f, 0.5f, 0.25f);
+    private Color activeColor = new Color(0.5f, 0.5f, 0.5f, 0.5f);
+    private Color completeColor = new Color(0.49f, 0.39f, 0.1f, 0.5f);
+
 
     void Start()
     {
         manager = GameObject.FindGameObjectWithTag("Manager");
         levelManager = manager.GetComponent<LevelManager>();
         itemManager = manager.GetComponent<ItemManager>();
-        numberMap[0] = zero;
-        numberMap[1] = one;
-        numberMap[2] = two;
-        numberMap[3] = three;
-        numberMap[4] = four;
-        numberMap[5] = five;
-        numberMap[6] = six;
-        numberMap[7] = seven;
-        numberMap[8] = eight;
-        numberMap[9] = nine;
+
+        activeAliens = levelManager.GetActivatedAliens();
+
+        numberMap[0] = zeroImage;
+        numberMap[1] = oneImage;
+        numberMap[2] = twoImage;
+        numberMap[3] = threeImage;
+        numberMap[4] = fourImage;
+        numberMap[5] = fiveImage;
+        numberMap[6] = sixImage;
+        numberMap[7] = sevenImage;
+        numberMap[8] = eightImage;
+        numberMap[9] = nineImage;
+        #if !UNITY_ANDROID
+        aButton.gameObject.SetActive(false);
+        bButton.gameObject.SetActive(false);
+        dPad.gameObject.SetActive(false);
+        #endif
+    }
+
+    void Update()
+    {
+        activeAliens = levelManager.GetActivatedAliens();
+
+#if UNITY_ANDROID
+        foreach(Touch touch in Input.touches)
+        {
+            if(aButton.HitTest(touch.position) && touch.phase == TouchPhase.Began)
+            {
+                levelManager.activeAlien.GetComponent<AlienController>().Jump();
+            }
+            else if(bButton.HitTest(touch.position) && touch.phase == TouchPhase.Began)
+            {
+                levelManager.activeAlien.GetComponent<AlienController>().StartSpecial();
+            }
+            else if(bButton.HitTest(touch.position) && touch.phase == TouchPhase.Ended)
+            {
+                levelManager.activeAlien.GetComponent<AlienController>().StopSpecial();
+            }
+            else if(blueToken.HitTest(touch.position) && touch.phase == TouchPhase.Began)
+            {
+                levelManager.SetActiveAlienByType(AlienType.BLUE);
+            }
+            else if(greenToken.HitTest(touch.position) && touch.phase == TouchPhase.Began)
+            {
+                levelManager.SetActiveAlienByType(AlienType.GREEN);
+            }
+            else if(pinkToken.HitTest(touch.position) && touch.phase == TouchPhase.Began)
+            {
+                levelManager.SetActiveAlienByType(AlienType.PINK);
+            }
+            else if(beigeToken.HitTest(touch.position) && touch.phase == TouchPhase.Began)
+            {
+                levelManager.SetActiveAlienByType(AlienType.BEIGE);
+            }
+            else if(yellowToken.HitTest(touch.position) && touch.phase == TouchPhase.Began)
+            {
+                levelManager.SetActiveAlienByType(AlienType.YELLOW);
+            }
+            else if(dPad.HitTest(touch.position))
+            {
+                if(touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+                {
+                    levelManager.activeAlien.GetComponent<AlienController>().hSpeed = 0.0f;
+                    continue;
+                }
+                Rect bounds = dPad.GetScreenRect();
+                if(touch.position.x > bounds.center.x)
+                {
+                    levelManager.activeAlien.GetComponent<AlienController>().hSpeed = 1.0f;;
+                }
+                else
+                {
+                    levelManager.activeAlien.GetComponent<AlienController>().hSpeed = -1.0f;;
+                }
+            }
+        }
+#endif
     }
 
     void OnGUI()
     {
-        Dictionary<AlienType, bool> activatedAliens = levelManager.GetActiveAliens();
-
-        GUIStyle centeredStyle = GUI.skin.GetStyle("Label");
-        centeredStyle.alignment = TextAnchor.MiddleCenter;
-
-        float buttonRowY = Screen.height * 0.05f;
-        float screenMiddleX = Screen.width / 2.0f;
-        float buttonSize = Screen.height * 0.1f;
-        float buttonGap = Screen.width * 0.01f;
-
-        Rect blueRect = new Rect(screenMiddleX - 2 * buttonSize, buttonRowY, buttonSize, buttonSize);
-        Rect greenRect = new Rect(screenMiddleX - buttonSize, buttonRowY, buttonSize, buttonSize);
-        Rect pinkRect = new Rect(screenMiddleX, buttonRowY, buttonSize, buttonSize);
-        Rect beigeRect = new Rect(screenMiddleX + buttonSize, buttonRowY, buttonSize, buttonSize);
-        Rect yellowRect = new Rect(screenMiddleX + 2 * buttonSize, buttonRowY, buttonSize, buttonSize);
-
-        GUI.color = activatedAliens[AlienType.BLUE] ? active : inactive;
-        if(GUI.Button(blueRect, blueAlienToken, centeredStyle))
+        starCount.texture = numberMap[itemManager.nCollectedStars];
+        if(itemManager.nCollectedStars == itemManager.nTotalStars)
         {
-            Debug.Log("Blue button Clicked");
-            levelManager.SetActiveAlienByType(AlienType.BLUE);
+            starCount.color = completeColor;
         }
 
-        GUI.color = activatedAliens[AlienType.GREEN] ? active : inactive;
-        if(GUI.Button(greenRect, greenAlienToken, centeredStyle))
-        {
-            Debug.Log("Green button Clicked");
-            levelManager.SetActiveAlienByType(AlienType.GREEN);
-        }
-
-        GUI.color = activatedAliens[AlienType.PINK] ? active : inactive;
-        if(GUI.Button(pinkRect, pinkAlienToken, centeredStyle))
-        {
-            Debug.Log("Pink button Clicked");
-            levelManager.SetActiveAlienByType(AlienType.PINK);
-        }
-
-        GUI.color = activatedAliens[AlienType.BEIGE] ? active : inactive;
-        if(GUI.Button(beigeRect, beigeAlienToken, centeredStyle))
-        {
-            Debug.Log("Beige button Clicked");
-            levelManager.SetActiveAlienByType(AlienType.BEIGE);
-        }
-
-        GUI.color = activatedAliens[AlienType.YELLOW] ? active : inactive;
-        if(GUI.Button(yellowRect, yellowAlienToken, centeredStyle))
-        {
-            Debug.Log("Yellow button Clicked");
-            levelManager.SetActiveAlienByType(AlienType.YELLOW);
-        }
-
-        Rect starRect = new Rect(buttonGap, buttonRowY, buttonSize, buttonSize);
-        Rect numberRect = new Rect(buttonSize, buttonRowY, buttonSize, buttonSize);
-
-
-        Texture2D nCollectedTexture = zero;
-        if(numberMap.ContainsKey(itemManager.nCollectedStars))
-        {
-            nCollectedTexture = numberMap[itemManager.nCollectedStars];
-        }
-
-        GUI.color = active;
-        GUI.Label(starRect, star, centeredStyle);
-
-        GUI.color = (itemManager.nCollectedStars >= itemManager.nTotalStars) ? complete : active;
-        GUI.Label(numberRect, nCollectedTexture, centeredStyle);
-
-
+        blueToken.color = activeAliens[AlienType.BLUE] ? activeColor : inactiveColor;
+        greenToken.color = activeAliens[AlienType.GREEN] ? activeColor : inactiveColor;
+        pinkToken.color = activeAliens[AlienType.PINK] ? activeColor : inactiveColor;
+        beigeToken.color = activeAliens[AlienType.BEIGE] ? activeColor : inactiveColor;
+        yellowToken.color = activeAliens[AlienType.YELLOW] ? activeColor : inactiveColor;
     }
 }
