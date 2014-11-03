@@ -51,6 +51,8 @@ public class AlienController : MonoBehaviour {
     private bool spin = false;
     private float spinTime = 0.5f;
 
+    private bool specialOn = false;
+
     private GameObject manager;
     private ItemManager itemManager;
     private LevelManager levelManager;
@@ -106,16 +108,10 @@ public class AlienController : MonoBehaviour {
         {
             Jump();
         }
-
         if(Input.GetButtonDown("Special"))
         {
-            StartSpecial();
+            ToggleSpecial();
         }
-        else if(Input.GetButtonUp("Special"))
-        {
-            StopSpecial();
-        }
-
         if(Input.GetButtonDown("SwitchBlue"))
         {
             ChangeAlienType(AlienType.BLUE);
@@ -179,6 +175,7 @@ public class AlienController : MonoBehaviour {
     */
     public void StartSpecial()
     {
+        specialOn = true;
         switch(alienType)
         {
             case AlienType.BLUE:
@@ -202,6 +199,7 @@ public class AlienController : MonoBehaviour {
 
     public void StopSpecial()
     {
+        specialOn = false;
         switch(alienType)
         {
             case AlienType.BLUE:
@@ -223,6 +221,18 @@ public class AlienController : MonoBehaviour {
         }
     }
 
+    public void ToggleSpecial()
+    {
+        if(specialOn)
+        {
+            StopSpecial();
+        }
+        else
+        {
+            StartSpecial();
+        }
+    }
+
     void StartGlide()
     {
         if(!glide && canGlide)
@@ -239,6 +249,7 @@ public class AlienController : MonoBehaviour {
     {
         if(glide)
         {
+            specialOn = false;
             rigidbody2D.gravityScale /= glideFactor;
             glide = false;
         }
@@ -257,7 +268,7 @@ public class AlienController : MonoBehaviour {
 
     void StopPhase()
     {
-
+        specialOn = false;
         canPhase = true;
         phase = !levelManager.CanStopPhaseObjects();
         if(!phase)

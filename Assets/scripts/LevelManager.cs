@@ -129,6 +129,7 @@ public class LevelManager : MonoBehaviour {
         activeAlien = alien;
         mainCamera.GetComponent<CameraFollow>().player = activeAlien.transform;
         activeAlien.SetActive(true);
+        activeAlien.GetComponent<AlienController>().StopSpecial();
         activeAlien.GetComponent<AlienController>().Spin();
     }
 

@@ -2,7 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class UIManager : MonoBehaviour {
+public class UIManager : MonoBehaviour
+{
+
+    public float acceleration;
 
     public Texture2D zeroImage;
     public Texture2D oneImage;
@@ -21,9 +24,15 @@ public class UIManager : MonoBehaviour {
     public GUITexture pinkToken;
     public GUITexture beigeToken;
     public GUITexture yellowToken;
-    public GUITexture dPad;
+    public GUITexture leftButton;
+    public GUITexture rightButton;
+    public GUITexture upButton;
+    public GUITexture downButton;
     public GUITexture aButton;
     public GUITexture bButton;
+
+    private int leftButtonAnchor = -1;
+    private int rightButtonAnchor = -1;
 
     private Dictionary<int, Texture2D> numberMap = new Dictionary<int, Texture2D>();
     private Dictionary<AlienType, bool> activeAliens = new Dictionary<AlienType, bool>();
@@ -54,11 +63,14 @@ public class UIManager : MonoBehaviour {
         numberMap[7] = sevenImage;
         numberMap[8] = eightImage;
         numberMap[9] = nineImage;
-        #if !UNITY_ANDROID
+#if !UNITY_ANDROID
         aButton.gameObject.SetActive(false);
         bButton.gameObject.SetActive(false);
-        dPad.gameObject.SetActive(false);
-        #endif
+        leftButton.gameObject.SetActive(false);
+        rightButton.gameObject.SetActive(false);
+        upButton.gameObject.SetActive(false);
+        downButton.gameObject.SetActive(false);
+#endif
     }
 
     void Update()
@@ -74,11 +86,7 @@ public class UIManager : MonoBehaviour {
             }
             else if(bButton.HitTest(touch.position) && touch.phase == TouchPhase.Began)
             {
-                levelManager.activeAlien.GetComponent<AlienController>().StartSpecial();
-            }
-            else if(bButton.HitTest(touch.position) && touch.phase == TouchPhase.Ended)
-            {
-                levelManager.activeAlien.GetComponent<AlienController>().StopSpecial();
+                levelManager.activeAlien.GetComponent<AlienController>().ToggleSpecial();
             }
             else if(blueToken.HitTest(touch.position) && touch.phase == TouchPhase.Began)
             {
@@ -100,22 +108,49 @@ public class UIManager : MonoBehaviour {
             {
                 levelManager.SetActiveAlienByType(AlienType.YELLOW);
             }
-            else if(dPad.HitTest(touch.position))
+            else if(rightButtonAnchor == touch.fingerId || rightButton.HitTest(touch.position))
             {
+                rightButtonAnchor = touch.fingerId;
+                float hSpeed = levelManager.activeAlien.GetComponent<AlienController>().hSpeed;
                 if(touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
                 {
-                    levelManager.activeAlien.GetComponent<AlienController>().hSpeed = 0.0f;
-                    continue;
+                    rightButtonAnchor = -1;
+                    hSpeed = 0.0f;
                 }
-                Rect bounds = dPad.GetScreenRect();
-                if(touch.position.x > bounds.center.x)
+                else if(leftButton.HitTest(touch.position))
                 {
-                    levelManager.activeAlien.GetComponent<AlienController>().hSpeed = 1.0f;;
+                    rightButtonAnchor = -1;
+                    leftButtonAnchor = touch.fingerId;
+                    hSpeed = 0.0f;
                 }
                 else
                 {
-                    levelManager.activeAlien.GetComponent<AlienController>().hSpeed = -1.0f;;
+                    hSpeed += Time.deltaTime * acceleration;
                 }
+                hSpeed = Mathf.Clamp(hSpeed, 0.0f, 1.0f);
+                levelManager.activeAlien.GetComponent<AlienController>().hSpeed = hSpeed;
+            }
+            else if(leftButtonAnchor == touch.fingerId || leftButton.HitTest(touch.position))
+            {
+                leftButtonAnchor = touch.fingerId;
+                float hSpeed = levelManager.activeAlien.GetComponent<AlienController>().hSpeed;
+                if(touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+                {
+                    leftButtonAnchor = -1;
+                    hSpeed = 0.0f;
+                }
+                else if(rightButton.HitTest(touch.position))
+                {
+                    leftButtonAnchor = -1;
+                    rightButtonAnchor = touch.fingerId;
+                    hSpeed = 0.0f;
+                }
+                else
+                {
+                    hSpeed -= Time.deltaTime * acceleration;
+                }
+                hSpeed = Mathf.Clamp(hSpeed, -1.0f, 0.0f);
+                levelManager.activeAlien.GetComponent<AlienController>().hSpeed = hSpeed;
             }
         }
 #endif
