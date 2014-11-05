@@ -39,6 +39,7 @@ public class LevelManager : MonoBehaviour {
     void Awake()
     {
         mainCamera = Instantiate(Resources.Load("camera")) as GameObject;
+        mainCamera.transform.position = new Vector3(0.0f, 0.0f, mainCamera.transform.position.z);
 
         Transform[] platforms = GameObject.FindObjectsOfType(typeof(Transform)) as Transform[];
         maxX = platforms[0].position.x;
@@ -124,7 +125,7 @@ public class LevelManager : MonoBehaviour {
         }
         else
         {
-            alien.transform.position = spawnPosition.transform.position;
+            MoveAlienToRespawn(alien);
         }
         activeAlien = alien;
         mainCamera.GetComponent<CameraFollow>().player = activeAlien.transform;
@@ -133,9 +134,9 @@ public class LevelManager : MonoBehaviour {
         activeAlien.GetComponent<AlienController>().Spin();
     }
 
-    public void MoveAlienToRespawn()
+    public void MoveAlienToRespawn(GameObject alien)
     {
-        activeAlien.transform.position = spawnPosition.transform.position;
+        alien.transform.position = spawnPosition.transform.position + new Vector3(0.0f, 0.3f, 0.0f);
     }
 
     public void SetCheckpoint(GameObject checkpoint)

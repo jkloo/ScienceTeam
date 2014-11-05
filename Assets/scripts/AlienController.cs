@@ -175,7 +175,6 @@ public class AlienController : MonoBehaviour {
     */
     public void StartSpecial()
     {
-        specialOn = true;
         switch(alienType)
         {
             case AlienType.BLUE:
@@ -242,6 +241,7 @@ public class AlienController : MonoBehaviour {
             rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x,
                                                0.1f * rigidbody2D.velocity.y);
             rigidbody2D.gravityScale *= glideFactor;
+            specialOn = true;
         }
     }
 
@@ -263,6 +263,7 @@ public class AlienController : MonoBehaviour {
             canPhase = false;
             spriteRenderer.color = phaseColor;
             levelManager.StartPhaseObjects();
+            specialOn = true;
         }
     }
 
@@ -288,6 +289,7 @@ public class AlienController : MonoBehaviour {
             Vector3 theScale = transform.localScale;
             theScale.y *= -1;
             transform.localScale = theScale;
+            specialOn = true;
         }
     }
 
@@ -312,6 +314,7 @@ public class AlienController : MonoBehaviour {
         theScale.y *= shrinkFactor;
         transform.localScale = theScale;
         groundRadius *= shrinkFactor;
+        specialOn = true;
     }
 
     void StopShrink()
@@ -367,7 +370,7 @@ public class AlienController : MonoBehaviour {
 
     void Respawn()
     {
-        levelManager.MoveAlienToRespawn();
+        levelManager.MoveAlienToRespawn(gameObject);
         StopSpecial();
         Spin();
     }
