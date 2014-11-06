@@ -1532,7 +1532,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afade7a73e2574318be085a718825fab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextLevel: lvl_1_1
+  nextLevel: HillsWorld
 --- !u!1001 &202303074
 Prefab:
   m_ObjectHideFlags: 0
@@ -2413,6 +2413,10 @@ Prefab:
     - target: {fileID: 400000, guid: 4a49374f1e7c543658f26c08dd26e05c, type: 2}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 4a49374f1e7c543658f26c08dd26e05c, type: 2}
+      propertyPath: nextLevel
+      value: HillsWorld
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4a49374f1e7c543658f26c08dd26e05c, type: 2}

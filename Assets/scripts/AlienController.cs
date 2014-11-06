@@ -58,12 +58,16 @@ public class AlienController : MonoBehaviour {
     private LevelManager levelManager;
 
 
+    public void Awake()
+    {
+        anim = GetComponent<Animator>();
+    }
+
     public void Start()
     {
         manager = GameObject.FindGameObjectWithTag("Manager");
         itemManager = manager.GetComponent<ItemManager>();
         levelManager = manager.GetComponent<LevelManager>();
-        anim = GetComponent<Animator>();
     }
 
     void FixedUpdate()
