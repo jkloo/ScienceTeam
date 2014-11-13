@@ -10,8 +10,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/scenes/WorldSelect.unity
   - enabled: 1
-    path: Assets/scenes/HillsWorld.unity
-  - enabled: 1
     path: Assets/scenes/MindTheJump.unity
   - enabled: 1
     path: Assets/scenes/UpAndUp.unity
