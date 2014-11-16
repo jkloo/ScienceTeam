@@ -33,11 +33,17 @@ public class LevelManager : MonoBehaviour {
     private Color phaseableColor = new Color(1f, 1f, 1f, 0.9f);
     private Color normalColor = new Color(1f, 1f, 1f, 1f);
 
-    private Dictionary<AlienType, bool> activatedAliens = new Dictionary<AlienType, bool>();
+    private Dictionary<AlienType, AlienState> alienStates = new Dictionary<AlienType, AlienState>();
+    public GameObject levelEndUI;
 
+    private List<string> levelOrder = new List<string>();
 
     void Awake()
     {
+        levelOrder.Add("UpAndUp");
+        levelOrder.Add("MindTheJump");
+
+        levelEndUI.SetActive(false);
         mainCamera = Instantiate(Resources.Load("camera")) as GameObject;
         mainCamera.transform.position = new Vector3(0.0f, 0.0f, mainCamera.transform.position.z);
 
@@ -84,11 +90,11 @@ public class LevelManager : MonoBehaviour {
 
         phasableObjects = GameObject.FindGameObjectsWithTag("Phaseable");
 
-        activatedAliens.Add(AlienType.BLUE, false);
-        activatedAliens.Add(AlienType.GREEN, false);
-        activatedAliens.Add(AlienType.PINK, false);
-        activatedAliens.Add(AlienType.BEIGE, false);
-        activatedAliens.Add(AlienType.YELLOW, false);
+        alienStates.Add(AlienType.BLUE, AlienState.DISABLED);
+        alienStates.Add(AlienType.GREEN, AlienState.DISABLED);
+        alienStates.Add(AlienType.PINK, AlienState.DISABLED);
+        alienStates.Add(AlienType.BEIGE, AlienState.DISABLED);
+        alienStates.Add(AlienType.YELLOW, AlienState.DISABLED);
 
         blueAlien = Instantiate(Resources.Load("blueAlien")) as GameObject;
         SetupAlien(blueAlien, "blueAlien");
@@ -106,7 +112,7 @@ public class LevelManager : MonoBehaviour {
         SetupAlien(yellowAlien, "yellowAlien");
 
         SetActiveAlien(blueAlien);
-        activatedAliens[AlienType.BLUE] = true;
+        alienStates[AlienType.BLUE] = AlienState.ACTIVE;
     }
 
     void SetupAlien(GameObject alien, string name)
@@ -151,16 +157,24 @@ public class LevelManager : MonoBehaviour {
 
     public bool SetActiveAlienByType(AlienType alienType)
     {
-        if(!activatedAliens[alienType])
+        if(alienStates[alienType] == AlienState.DISABLED)
         {
             return false;
         }
 
-        if(activeAlien.GetComponent<AlienController>().alienType == alienType)
+        if(alienStates[alienType] == AlienState.ACTIVE)
         {
             return false;
         }
-
+        List<AlienType> buffer = new List<AlienType>(alienStates.Keys);
+        foreach(AlienType at in buffer)
+        {
+            if(alienStates[at] == AlienState.ACTIVE)
+            {
+                alienStates[at] = AlienState.INACTIVE;
+            }
+        }
+        alienStates[alienType] = AlienState.ACTIVE;
         GameObject newAlien;
         switch(alienType)
         {
@@ -216,25 +230,49 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
-    public void ActivateAlien(AlienType alienType)
+    public void EnableAlien(AlienType alienType)
     {
-        activatedAliens[alienType] = true;
+        alienStates[alienType] = AlienState.INACTIVE;
     }
 
-    public Dictionary<AlienType, bool> GetActivatedAliens()
+    public Dictionary<AlienType, AlienState> GetAlienStates()
     {
-        return activatedAliens;
+        return alienStates;
+    }
+
+    public void LevelEnd()
+    {
+        levelEndUI.SetActive(true);
+        activeAlien.SetActive(false);
     }
 
     public void LoadNextLevel()
     {
-        string nextLevel = levelEnd.GetComponent<NextLevelLoader>().nextLevel;
-        StartCoroutine(LoadNextLevelWait(nextLevel));
+        int index = levelOrder.IndexOf(Application.loadedLevelName) + 1;
+        string nextLevel;
+        if(index >= levelOrder.Count)
+        {
+            nextLevel = "WorldSelect";
+        }
+        else
+        {
+            nextLevel = levelOrder[index];
+        }
+        LoadLevel(nextLevel);
     }
 
-    IEnumerator LoadNextLevelWait(string nextLevel)
+    public void LoadLevel(string nextLevel)
     {
-        yield return new WaitForSeconds(loadNextLevelTime);
         Application.LoadLevel(nextLevel);
+    }
+
+    public void Jump()
+    {
+        activeAlien.GetComponent<AlienController>().Jump();
+    }
+
+    public void ToggleSpecial()
+    {
+        activeAlien.GetComponent<AlienController>().ToggleSpecial();
     }
 }

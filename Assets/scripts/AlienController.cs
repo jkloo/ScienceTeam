@@ -10,6 +10,13 @@ public enum AlienType {
     YELLOW
 }
 
+public enum AlienState
+{
+    DISABLED = 0,
+    INACTIVE,
+    ACTIVE
+}
+
 public class AlienController : MonoBehaviour {
 
     public float maxSpeed = 7.5f;
@@ -391,7 +398,7 @@ public class AlienController : MonoBehaviour {
         else if(other.gameObject.CompareTag("Finish"))
         {
             Spin();
-            levelManager.LoadNextLevel();
+            levelManager.LevelEnd();
         }
         else if(other.gameObject.CompareTag("DeathZone"))
         {

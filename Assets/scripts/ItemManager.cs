@@ -44,7 +44,7 @@ public class ItemManager : MonoBehaviour
             case ItemType.TOKEN:
                 AlienType alienType = obj.GetComponent<TokenDetail>().alienType;
                 LevelManager levelManager = manager.GetComponent<LevelManager>();
-                levelManager.ActivateAlien(alienType);
+                levelManager.EnableAlien(alienType);
                 DisableObject(obj);
                 break;
             default:
