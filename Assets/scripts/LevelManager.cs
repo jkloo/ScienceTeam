@@ -30,10 +30,10 @@ public class LevelManager : MonoBehaviour {
     private GameObject spawnPosition;
     private GameObject[] phasableObjects;
 
-    private Color phaseableColor = new Color(1f, 1f, 1f, 0.9f);
+    private Color phaseableColor = new Color(1f, 1f, 1f, 0.5f);
     private Color normalColor = new Color(1f, 1f, 1f, 1f);
 
-    private Dictionary<AlienType, AlienState> alienStates = new Dictionary<AlienType, AlienState>();
+    public static Dictionary<AlienType, AlienState> alienStates = new Dictionary<AlienType, AlienState>();
     public GameObject levelEndUI;
 
     private List<string> levelOrder = new List<string>();
@@ -83,18 +83,17 @@ public class LevelManager : MonoBehaviour {
             x += bgwidth;
         }
 
-
         levelStart = GameObject.FindGameObjectWithTag("Start");
         levelEnd = GameObject.FindGameObjectWithTag("Finish");
         spawnPosition = levelStart;
 
         phasableObjects = GameObject.FindGameObjectsWithTag("Phaseable");
 
-        alienStates.Add(AlienType.BLUE, AlienState.DISABLED);
-        alienStates.Add(AlienType.GREEN, AlienState.DISABLED);
-        alienStates.Add(AlienType.PINK, AlienState.DISABLED);
-        alienStates.Add(AlienType.BEIGE, AlienState.DISABLED);
-        alienStates.Add(AlienType.YELLOW, AlienState.DISABLED);
+        alienStates[AlienType.BLUE] = AlienState.DISABLED;
+        alienStates[AlienType.GREEN] = AlienState.DISABLED;
+        alienStates[AlienType.PINK] = AlienState.DISABLED;
+        alienStates[AlienType.BEIGE] = AlienState.DISABLED;
+        alienStates[AlienType.YELLOW] = AlienState.DISABLED;
 
         blueAlien = Instantiate(Resources.Load("blueAlien")) as GameObject;
         SetupAlien(blueAlien, "blueAlien");
@@ -246,6 +245,11 @@ public class LevelManager : MonoBehaviour {
         activeAlien.SetActive(false);
     }
 
+    public void ReloadLevel()
+    {
+		Application.LoadLevel (Application.loadedLevelName);
+    }
+
     public void LoadNextLevel()
     {
         int index = levelOrder.IndexOf(Application.loadedLevelName) + 1;
@@ -264,15 +268,5 @@ public class LevelManager : MonoBehaviour {
     public void LoadLevel(string nextLevel)
     {
         Application.LoadLevel(nextLevel);
-    }
-
-    public void Jump()
-    {
-        activeAlien.GetComponent<AlienController>().Jump();
-    }
-
-    public void ToggleSpecial()
-    {
-        activeAlien.GetComponent<AlienController>().ToggleSpecial();
     }
 }
