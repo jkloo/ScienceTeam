@@ -19,6 +19,8 @@ public class UIManager : MonoBehaviour
     public Image beigeToken;
     public Image yellowToken;
 
+    public Text starCountEnd;
+
     private Dictionary<AlienState, Color> alienStateColorMap = new Dictionary<AlienState, Color>();
 
     private GameObject manager;
