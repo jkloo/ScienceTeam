@@ -112,7 +112,7 @@ public class AlienController : MonoBehaviour {
             StopGlide();
         }
 
-#if !UNITY_ANDROID || UNITY_EDITOR
+#if !UNITY_ANDROID
         hSpeed = Input.GetAxis("Horizontal");
         crouched = Input.GetButton("Crouch");
         if(Input.GetButtonDown("Jump"))
@@ -344,9 +344,13 @@ public class AlienController : MonoBehaviour {
     /*
     * Player object manipulation
     */
-    void ChangeAlienType(AlienType newType)
+    public void ChangeAlienType(AlienType newType)
     {
         if(newType == alienType)
+        {
+            return;
+        }
+        if(spin)
         {
             return;
         }

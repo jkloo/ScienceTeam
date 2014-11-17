@@ -8,8 +8,9 @@ public class UIManager : MonoBehaviour
 
     public float acceleration;
     private float moveSpeed;
-    private bool direction;
-    private bool moving;
+
+    private bool movingRight;
+    private bool movingLeft;
 
     public Text starCount;
     public Image blueToken;
@@ -72,45 +73,51 @@ public class UIManager : MonoBehaviour
         levelManager.activeAlien.GetComponent<AlienController>().ToggleSpecial();
     }
 
-    public void Move(bool right)
+    public void MoveRight()
     {
-        if(right)
-        {
-            if(!direction)
-            {
-                moveSpeed = 0.0f;
-            }
-        }
-        else
-        {
-            if(direction)
-            {
-                moveSpeed = 0.0f;
-            }
-        }
-        direction = right;
-        moving = true;
+        movingLeft = false;
+        movingRight = true;
+        moveSpeed = 0.0f;
+    }
+
+    public void MoveLeft()
+    {
+        movingLeft = true;
+        movingRight = false;
+        moveSpeed = 0.0f;
     }
 
     private void MoveAcceleration()
     {
-        if(moving)
+        if(movingRight)
         {
-            moveSpeed += Time.deltaTime * acceleration * (direction ? 1 : -1);
-            moveSpeed = Mathf.Clamp(moveSpeed, -1.0f, 1.0f);
-            levelManager.activeAlien.GetComponent<AlienController>().hSpeed = moveSpeed;
+            if(moveSpeed < 0.0f)
+            {
+                moveSpeed = 0.0f;
+            }
+            moveSpeed += Time.deltaTime * acceleration;
+            moveSpeed = Mathf.Clamp(moveSpeed, 0.0f, 1.0f);
+        }
+        else if(movingLeft)
+        {
+            if(moveSpeed > 0.0f)
+            {
+                moveSpeed = 0.0f;
+            }
+            moveSpeed -= Time.deltaTime * acceleration;
+            moveSpeed = Mathf.Clamp(moveSpeed,  -1.0f, 0.0f);
         }
         else
         {
-            moveSpeed += Time.deltaTime * acceleration * (!direction ? 1 : -1);
-            moveSpeed = Mathf.Clamp(moveSpeed, (direction ? 0.0f : -1.0f), (direction ? 1.0f : 0.0f));
-            levelManager.activeAlien.GetComponent<AlienController>().hSpeed = moveSpeed;
+            moveSpeed = 0.0f;
         }
+        levelManager.activeAlien.GetComponent<AlienController>().hSpeed = moveSpeed;
     }
 
     public void MoveStop()
     {
-        moving = false;
+        movingRight = false;
+        movingLeft = false;
     }
 
     public void SetActiveAlienByNumber(int n)
@@ -118,19 +125,19 @@ public class UIManager : MonoBehaviour
         switch(n)
         {
             case 1:
-                levelManager.SetActiveAlienByType(AlienType.BLUE);
+                levelManager.activeAlien.GetComponent<AlienController>().ChangeAlienType(AlienType.BLUE);
                 break;
             case 2:
-                levelManager.SetActiveAlienByType(AlienType.GREEN);
+                levelManager.activeAlien.GetComponent<AlienController>().ChangeAlienType(AlienType.GREEN);
                 break;
             case 3:
-                levelManager.SetActiveAlienByType(AlienType.PINK);
+                levelManager.activeAlien.GetComponent<AlienController>().ChangeAlienType(AlienType.PINK);
                 break;
             case 4:
-                levelManager.SetActiveAlienByType(AlienType.BEIGE);
+                levelManager.activeAlien.GetComponent<AlienController>().ChangeAlienType(AlienType.BEIGE);
                 break;
             case 5:
-                levelManager.SetActiveAlienByType(AlienType.YELLOW);
+                levelManager.activeAlien.GetComponent<AlienController>().ChangeAlienType(AlienType.YELLOW);
                 break;
             default:
                 break;
