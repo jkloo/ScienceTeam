@@ -20,7 +20,6 @@ public class LevelEndPanelController : MonoBehaviour
 
     private Color activeColor = new Color(1f, 1f, 1f, 1f);
     private Color inactiveColor = new Color(1f, 1f, 1f, 0.5f);
-    private Color disabledColor = new Color(1f, 1f, 1f, 0.1f);
     private Color completeColor = new Color(0.98f, 0.78f, 0.2f, 1f);
 
 
@@ -37,6 +36,10 @@ public class LevelEndPanelController : MonoBehaviour
     void Update ()
     {
         starCount.text = itemManager.nCollectedStars + "/" + itemManager.nTotalStars;
+        if(itemManager.nCollectedStars == itemManager.nTotalStars)
+        {
+            starCount.color = completeColor;
+        }
         blueToken.color = alienStateColorMap[LevelManager.alienStates[AlienType.BLUE]];
         greenToken.color = alienStateColorMap[LevelManager.alienStates[AlienType.GREEN]];
         pinkToken.color = alienStateColorMap[LevelManager.alienStates[AlienType.PINK]];

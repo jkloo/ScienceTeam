@@ -633,10 +633,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadNextLevelTime: .5
-  maxX: 30
-  maxY: 30
-  minX: -30
-  minY: 2
   backgroundPrefab: backgrounds/grasslandBG
   activeAlien: {fileID: 0}
   levelEndUI: {fileID: 100060}

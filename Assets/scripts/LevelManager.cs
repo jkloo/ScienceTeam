@@ -6,11 +6,6 @@ public class LevelManager : MonoBehaviour {
 
     public float loadNextLevelTime = 0.5f;
 
-    public float maxX = 30f;
-    public float maxY = 30f;
-    public float minX = -30f;
-    public float minY = 2f;
-
     public string backgroundPrefab;
     private float bgwidth = 10.24f;
     private float yCameraOffset = 2.7f;
@@ -36,21 +31,18 @@ public class LevelManager : MonoBehaviour {
     public static Dictionary<AlienType, AlienState> alienStates = new Dictionary<AlienType, AlienState>();
     public GameObject levelEndUI;
 
-    private List<string> levelOrder = new List<string>();
 
     void Awake()
     {
-        levelOrder.Add("UpAndUp");
-        levelOrder.Add("MindTheJump");
-
         levelEndUI.SetActive(false);
         mainCamera = Instantiate(Resources.Load("camera")) as GameObject;
         mainCamera.transform.position = new Vector3(0.0f, 0.0f, mainCamera.transform.position.z);
 
         Transform[] platforms = GameObject.FindObjectsOfType(typeof(Transform)) as Transform[];
-        maxX = platforms[0].position.x;
-        minX = platforms[0].position.x;
-        minY = platforms[0].position.y;
+        float maxX = platforms[0].position.x;
+        float minX = platforms[0].position.x;
+        float minY = platforms[0].position.y;
+        float maxY = 30.0f;
         foreach(Transform platform in platforms)
         {
             if(platform.position.x > maxX)
@@ -247,22 +239,12 @@ public class LevelManager : MonoBehaviour {
 
     public void ReloadLevel()
     {
-		Application.LoadLevel (Application.loadedLevelName);
+        LoadLevel(Application.loadedLevelName);
     }
 
     public void LoadNextLevel()
     {
-        int index = levelOrder.IndexOf(Application.loadedLevelName) + 1;
-        string nextLevel;
-        if(index >= levelOrder.Count)
-        {
-            nextLevel = "WorldSelect";
-        }
-        else
-        {
-            nextLevel = levelOrder[index];
-        }
-        LoadLevel(nextLevel);
+        LoadLevel(LevelOrder.GetNextLevel(Application.loadedLevelName));
     }
 
     public void LoadLevel(string nextLevel)
