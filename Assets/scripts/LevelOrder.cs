@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class LevelOrder : MonoBehaviour
 {
-    public static List<string> Order = new List<string>(){"UpAndUp", "MindTheJump"};
+    public static List<string> Order = new List<string>(){"UpAndUp", "MindTheJump", "IntoTheMountain"};
 
     public static string GetNextLevel(string currLevel)
     {

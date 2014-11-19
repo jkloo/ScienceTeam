@@ -13,3 +13,5 @@ EditorBuildSettings:
     path: Assets/scenes/MindTheJump.unity
   - enabled: 1
     path: Assets/scenes/UpAndUp.unity
+  - enabled: 1
+    path: Assets/scenes/IntoTheMountain.unity
