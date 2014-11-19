@@ -39,6 +39,8 @@ public class AlienController : MonoBehaviour {
     private float vSpeed = 0.0f;
     private bool facingRight = true;
 
+    private bool respawning = false;
+
     private bool crouched = false;
 
     private bool grounded = false;
@@ -306,7 +308,7 @@ public class AlienController : MonoBehaviour {
 
     void StopInvertGravity()
     {
-        if(gravInvert)
+        if(gravInvert && (grounded || respawning))
         {
             gravInvert = false;
             rigidbody2D.gravityScale *= -1;
@@ -385,9 +387,11 @@ public class AlienController : MonoBehaviour {
 
     void Respawn()
     {
+        respawning = true;
         levelManager.MoveAlienToRespawn(gameObject);
         StopSpecial();
         Spin();
+        respawning = false;
     }
 
     /*
