@@ -308,7 +308,7 @@ public class AlienController : MonoBehaviour {
 
     void StopInvertGravity()
     {
-        if(gravInvert && (grounded || respawning))
+        if(gravInvert && (grounded || respawning || spin))
         {
             gravInvert = false;
             rigidbody2D.gravityScale *= -1;
@@ -359,7 +359,9 @@ public class AlienController : MonoBehaviour {
         bool switched = levelManager.SetActiveAlienByType(newType);
         if(switched)
         {
+            spin = true;
             StopSpecial();
+            spin = false;
         }
     }
 
