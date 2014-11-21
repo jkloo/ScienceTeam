@@ -191,8 +191,8 @@ MonoBehaviour:
     m_Bits: 512
   groundCheck: {fileID: 400002}
   spriteRenderer: {fileID: 21200000}
-  respawnPosition: {fileID: 0}
   alienType: 0
+  hSpeed: 0
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1
