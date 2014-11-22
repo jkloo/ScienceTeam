@@ -37,7 +37,7 @@ public class AlienController : MonoBehaviour {
 
     public float hSpeed = 0.0f;
     private float vSpeed = 0.0f;
-    private bool facingRight = true;
+    public bool facingRight = true;
 
     private bool respawning = false;
 
@@ -66,10 +66,14 @@ public class AlienController : MonoBehaviour {
     private ItemManager itemManager;
     private LevelManager levelManager;
 
+    private CarrierController carrierController;
+
 
     public void Awake()
     {
         anim = GetComponent<Animator>();
+        carrierController = GetComponent<CarrierController>();
+        Debug.Log(carrierController);
     }
 
     public void Start()
@@ -197,6 +201,7 @@ public class AlienController : MonoBehaviour {
                 StartInvertGravity();
                 break;
             case AlienType.BEIGE:
+                specialOn = carrierController.PickupObject();
                 break;
             case AlienType.GREEN:
                 StartPhase();
@@ -221,6 +226,7 @@ public class AlienController : MonoBehaviour {
                 StopInvertGravity();
                 break;
             case AlienType.BEIGE:
+                specialOn = carrierController.DropObject();
                 break;
             case AlienType.GREEN:
                 StopPhase();
