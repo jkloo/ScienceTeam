@@ -73,7 +73,6 @@ public class AlienController : MonoBehaviour {
     {
         anim = GetComponent<Animator>();
         carrierController = GetComponent<CarrierController>();
-        Debug.Log(carrierController);
     }
 
     public void Start()

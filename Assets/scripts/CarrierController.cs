@@ -18,20 +18,20 @@ public class CarrierController : MonoBehaviour {
         {
             return;
         }
-        Debug.Log(grabObject);
         grabbedObject = grabObject;
         grabbedObject.GetComponent<CarryableController>().SetCarriedStatus(true);
     }
 
     public bool DropObject()
     {
-        Debug.Log("Drop Called");
         if(grabbedObject == null)
         {
             return false;
         }
         grabbedObject.rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, rigidbody2D.velocity.y);
-        grabbedObject.GetComponent<CarryableController>().SetCarriedStatus(false);
+        grabbedObject.transform.rotation.Set(0.0f, 0.0f, 0.0f, 0.0f);
+		grabbedObject.rigidbody2D.angularVelocity = 0.0f;
+		grabbedObject.GetComponent<CarryableController>().SetCarriedStatus(false);
         grabbedObject = null;
 
         return grabbedObject != null;
@@ -39,7 +39,6 @@ public class CarrierController : MonoBehaviour {
 
     public bool PickupObject()
     {
-        Debug.Log("Pickup Called");
         if(grabbedObject == null)
         {
             TryGrabObject(FindCarryableObject(0.7f));

@@ -11,7 +11,7 @@ public class PushButtonController : MonoBehaviour
 {
     public MoveableObjectController moveableObject;
     public SwitchType switchType = SwitchType.TOGGLE;
-    private bool pressed;
+    private bool pressed = false;
 
     private Animator anim;
 
@@ -26,7 +26,7 @@ public class PushButtonController : MonoBehaviour
         {
             return;
         }
-        if(other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Carryable"))
+        if(!other.isTrigger && (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Carryable")))
         {
             anim.SetBool("Pressed", true);
             pressed = true;
@@ -39,7 +39,7 @@ public class PushButtonController : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if(other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Carryable"))
+        if((other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Carryable")))
         {
             if(switchType == SwitchType.HOLD)
             {
@@ -48,5 +48,23 @@ public class PushButtonController : MonoBehaviour
             anim.SetBool("Pressed", false);
             pressed = false;
         }
+    }
+
+    void OnTriggerStay2D(Collider2D other)
+    {
+        if(pressed)
+        {
+            return;
+        }
+        if(!other.isTrigger && (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Carryable")))
+        {
+            anim.SetBool("Pressed", true);
+            pressed = true;
+            if(moveableObject)
+            {
+                moveableObject.On();
+            }
+        }
+
     }
 }
