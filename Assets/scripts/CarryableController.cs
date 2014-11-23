@@ -23,7 +23,7 @@ public class CarryableController : MonoBehaviour {
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if(other.gameObject.CompareTag("SafeZone"))
+        if(other.gameObject.CompareTag("WorldZone"))
         {
             transform.position = startPosition;
             rigidbody2D.velocity = new Vector2(0.0f, 0.0f);

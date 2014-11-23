@@ -55,7 +55,7 @@ public class PushButtonController : MonoBehaviour
         {
             if(other.gameObject.CompareTag("Carryable"))
             {
-                other.gameObject.transform.position = new Vector2(anchor.position.x, other.gameObject.transform.position.y);
+                other.gameObject.transform.position = new Vector2(anchor.position.x, anchor.position.y + 0.4f);
                 other.rigidbody2D.velocity = new Vector2(0.0f, 0.0f);
             }
             anim.SetBool("Pressed", true);
