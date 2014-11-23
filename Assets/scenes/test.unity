@@ -1985,7 +1985,7 @@ MonoBehaviour:
   maxX: 100000
   maxY: 100000
   minX: -100000
-  minY: 2
+  minY: 0
   player: {fileID: 1335079894}
 --- !u!81 &917755896
 AudioListener:
@@ -2056,7 +2056,7 @@ Transform:
   m_Children:
   - {fileID: 829570277}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
 --- !u!1 &944629705
 GameObject:
   m_ObjectHideFlags: 0
@@ -2540,11 +2540,11 @@ Transform:
   m_PrefabInternal: {fileID: 1293494508}
   m_GameObject: {fileID: 1264484705}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.0999999, y: .699999988, z: 0}
+  m_LocalPosition: {x: -.00999999978, y: .699999988, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
 --- !u!1001 &1293494508
 Prefab:
   m_ObjectHideFlags: 0
@@ -2554,7 +2554,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400000, guid: e3cca0a2b79b049a080b8e916429281a, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 2.0999999
+      value: -.00999999978
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: e3cca0a2b79b049a080b8e916429281a, type: 2}
       propertyPath: m_LocalPosition.y
@@ -2582,7 +2582,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: e3cca0a2b79b049a080b8e916429281a, type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e3cca0a2b79b049a080b8e916429281a, type: 2}
@@ -3093,6 +3093,10 @@ Prefab:
       objectReference: {fileID: 1335079894}
     - target: {fileID: 21200000, guid: 68635406f04b449e7bec78129e36e609, type: 2}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 68635406f04b449e7bec78129e36e609, type: 2}
+      propertyPath: minY
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
