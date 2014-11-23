@@ -10,31 +10,21 @@ public enum SwitchType
 public class PushButtonController : MonoBehaviour
 {
     public MoveableObjectController moveableObject;
+    public Transform anchor;
     public SwitchType switchType = SwitchType.TOGGLE;
-    private bool pressed = false;
 
+    private bool pressed = false;
     private Animator anim;
 
     void Awake()
     {
         anim = GetComponent<Animator>();
+
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(pressed)
-        {
-            return;
-        }
-        if(!other.isTrigger && (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Carryable")))
-        {
-            anim.SetBool("Pressed", true);
-            pressed = true;
-            if(moveableObject)
-            {
-                moveableObject.On();
-            }
-        }
+        SwitchActive(other);
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -52,12 +42,22 @@ public class PushButtonController : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D other)
     {
+        SwitchActive(other);
+    }
+
+    void SwitchActive(Collider2D other)
+    {
         if(pressed)
         {
             return;
         }
         if(!other.isTrigger && (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Carryable")))
         {
+            if(other.gameObject.CompareTag("Carryable"))
+            {
+                other.gameObject.transform.position = new Vector2(anchor.position.x, other.gameObject.transform.position.y);
+                other.rigidbody2D.velocity = new Vector2(0.0f, 0.0f);
+            }
             anim.SetBool("Pressed", true);
             pressed = true;
             if(moveableObject)
@@ -65,6 +65,5 @@ public class PushButtonController : MonoBehaviour
                 moveableObject.On();
             }
         }
-
     }
 }

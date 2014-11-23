@@ -26,6 +26,7 @@ public class CarryableController : MonoBehaviour {
         if(other.gameObject.CompareTag("SafeZone"))
         {
             transform.position = startPosition;
+            rigidbody2D.velocity = new Vector2(0.0f, 0.0f);
         }
     }
 }

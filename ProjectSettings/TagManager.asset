@@ -12,6 +12,7 @@ TagManager:
   - Manager
   - Carryable
   - Pickup
+  - Switch
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX
