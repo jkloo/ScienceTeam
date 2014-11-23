@@ -20,7 +20,6 @@ public class CarryableController : MonoBehaviour {
     {
         carried = status;
         anim.SetBool("Carried", status);
-        // rigidbody2D.isKinematic = status;
         collider2D.isTrigger = status;
     }
 
