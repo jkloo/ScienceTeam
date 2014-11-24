@@ -7,10 +7,12 @@ public class CarryableController : MonoBehaviour {
     private bool carried = false;
     private Vector2 startPosition;
     private CameraFollow cameraFollow;
+    private HandleMovingPlatforms movingPlatformHandler;
 
     void Awake()
     {
         anim = GetComponent<Animator>();
+        movingPlatformHandler = GetComponent<HandleMovingPlatforms>();
         startPosition = transform.position;
         GameObject camera = GameObject.FindGameObjectWithTag("MainCamera");
         cameraFollow = camera.GetComponent<CameraFollow>();
@@ -19,8 +21,8 @@ public class CarryableController : MonoBehaviour {
     public void SetCarriedStatus(bool status)
     {
         carried = status;
-        anim.SetBool("Carried", status);
         collider2D.isTrigger = status;
+        movingPlatformHandler.standingOn = null;
     }
 
     void FixedUpdate()
@@ -30,6 +32,8 @@ public class CarryableController : MonoBehaviour {
         {
             transform.position = startPosition;
             rigidbody2D.velocity = new Vector2(0.0f, 0.0f);
+            transform.rotation.Set(0.0f, 0.0f, 0.0f, 0.0f);
+            rigidbody2D.angularVelocity = 0.0f;
         }
     }
 

@@ -51,6 +51,10 @@ public class PushButtonController : MonoBehaviour
         {
             return;
         }
+        if(other.gameObject.rigidbody2D.isKinematic)
+        {
+            return;
+        }
         if(!other.isTrigger && (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Carryable")))
         {
             if(other.gameObject.CompareTag("Carryable"))

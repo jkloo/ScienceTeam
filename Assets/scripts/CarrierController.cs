@@ -3,13 +3,15 @@ using System.Collections;
 
 public class CarrierController : MonoBehaviour {
 
-    private AlienController alienController;
     public GameObject grabbedObject;
+    private AlienController alienController;
+    private HandleMovingPlatforms movingPlatformHandler;
 
     // Use this for initialization
     void Start ()
     {
         alienController = GetComponent<AlienController>();
+        movingPlatformHandler = GetComponent<HandleMovingPlatforms>();
     }
 
     void TryGrabObject(GameObject grabObject)
@@ -32,6 +34,10 @@ public class CarrierController : MonoBehaviour {
         grabbedObject.transform.rotation.Set(0.0f, 0.0f, 0.0f, 0.0f);
 		grabbedObject.rigidbody2D.angularVelocity = 0.0f;
 		grabbedObject.GetComponent<CarryableController>().SetCarriedStatus(false);
+        if(movingPlatformHandler.standingOn == gameObject)
+        {
+            movingPlatformHandler.standingOn = null;
+        }
         grabbedObject = null;
 
         return grabbedObject != null;
