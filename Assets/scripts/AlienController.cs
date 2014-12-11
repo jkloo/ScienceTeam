@@ -44,7 +44,7 @@ public class AlienController : MonoBehaviour {
     private bool crouched = false;
 
     private bool grounded = false;
-    private float groundRadius = 0.2f;
+    private float groundRadius = 0.3f;
 
     private bool glide = false;
     private bool canGlide = false;

@@ -45,7 +45,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.22029781, y: 8.7928009, z: 0}
+  m_LocalPosition: {x: -28.8759327, y: 6.37921715, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400002}
@@ -58,7 +58,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -.379999995, z: 0}
+  m_LocalPosition: {x: 0, y: -.649999976, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400000}
@@ -72,7 +72,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: .0500000007
-  m_GravityScale: 3
+  m_GravityScale: 3.75
   m_FixedAngle: 1
   m_IsKinematic: 0
   m_Interpolate: 1
@@ -87,8 +87,8 @@ CircleCollider2D:
   m_Enabled: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Radius: .270000011
-  m_Center: {x: 0, y: -.200000003}
+  m_Radius: .400000006
+  m_Center: {x: 0, y: -.270000011}
 --- !u!58 &5800002
 CircleCollider2D:
   m_ObjectHideFlags: 1
@@ -98,8 +98,8 @@ CircleCollider2D:
   m_Enabled: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Radius: .340000004
-  m_Center: {x: 0, y: .119999997}
+  m_Radius: .5
+  m_Center: {x: 0, y: .200000003}
 --- !u!82 &8200000
 AudioSource:
   m_ObjectHideFlags: 1
@@ -196,8 +196,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98b5d0e64f74b47e9accec608529b896, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 7.5
-  jumpForce: 500
+  maxSpeed: 10
+  jumpForce: 650
   glideFactor: .200000003
   whatIsGround:
     serializedVersion: 2

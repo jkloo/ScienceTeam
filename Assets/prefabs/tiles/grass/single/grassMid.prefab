@@ -13,7 +13,7 @@ GameObject:
   - 61: {fileID: 6100000}
   m_Layer: 9
   m_Name: grassMid
-  m_TagString: Phaseable
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -54,7 +54,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Size: {x: .699999988, y: .699999988}
+  m_Size: {x: 1, y: 1}
   m_Center: {x: 0, y: 0}
 --- !u!212 &21200000
 SpriteRenderer:
